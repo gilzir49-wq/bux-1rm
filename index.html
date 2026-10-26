@@ -121,7 +121,7 @@ input[type=date].in{font-size:24px;color-scheme:dark}
 const CLOUD = {
   url: "https://command-center-gal-default-rtdb.europe-west1.firebasedatabase.app",
   node: "bux-deadlift-1rm/v2",
-  pin: "1234"            // ← קוד מאמן
+  pinHash: "091205eb007cb9e49ecc4e1850b891097d6cfe92f82baaa148b797d50eae25b1"   // ← קוד מאמן (שמור מוצפן; לשינוי — לבקש מקלוד)
 };
 const EXERCISES = [
   {n:"דדליפט",t:"kg"},{n:"סקוואט אחורי",t:"kg"},{n:"סקוואט קדמי",t:"kg"},{n:"אוברהד סקוואט",t:"kg"},
@@ -157,7 +157,11 @@ const $ = id => document.getElementById(id);
 const r1 = n => Math.round(n*10)/10;
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const isoToday = () => { const d=new Date(); return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); };
-const showDate = iso => { if(!iso) return 'לפני'; const [y,m,d]=iso.split('-'); return `${+d}.${+m}.${y.slice(2)}`; };
+const ISO_RE=/^\d{4}-\d{2}-\d{2}$/, ID_RE=/^[ue][a-z0-9]{4,24}$/;
+const showDate = iso => { if(!iso) return 'לפני'; if(!ISO_RE.test(iso)) return '?'; const [y,m,d]=iso.split('-'); return `${+d}.${+m}.${y.slice(2)}`; };
+// קוד אישי לא נשמר כמו שהוא — רק טביעה מוצפנת שלו
+async function sha(s){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+const codeHash = (name,code) => sha('bux1rm|'+norm(name)+'|'+code);
 const norm = s => s.trim().replace(/\s+/g,' ');
 function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2600);}
 
@@ -174,22 +178,29 @@ function allEx(u){ const extra=Object.values(u.exNames||{}).filter(n=>!EXERCISES
 
 // ===== ענן — כל מתאמן שמור בנפרד =====
 async function j(url,opt){ const r=await fetch(url,opt); if(!r.ok) throw 0; return r.json(); }
-const getAll  = async()=> (await j(base+'.json'))||{};
+// מסננים רשומות שלא נוצרו ע״י האפליקציה (הגנה מפני הזרקת קוד)
+const getAll  = async()=> Object.fromEntries(Object.entries((await j(base+'.json'))||{}).filter(([id,u])=>ID_RE.test(id)&&u&&typeof u.name==='string'));
 const getUser = async id => fix(await j(base+'/'+id+'.json'));
 async function saveUser(){
   try{ await j(base+'/'+ME+'.json',{method:'PUT',body:JSON.stringify(USER)}); return true; }
   catch(e){ toast('⚠️ לא נשמר — בדוק אינטרנט ונסה שוב'); return false; }
 }
-async function loadEvents(){ try{ EVENTS=(await j(evBase+'.json'))||{}; }catch(e){} }
+async function loadEvents(){ try{ const d=(await j(evBase+'.json'))||{}; EVENTS=Object.fromEntries(Object.entries(d).filter(([id,e])=>ID_RE.test(id)&&e&&EXERCISES.some(x=>x.n===e.ex)&&ISO_RE.test(e.iso))); }catch(e){} }
 // רשומה ביומן: {v: מספר או null (=לא זכור), iso: תאריך או ריק (=התוצאה מלפני), note}
 function fix(u){
-  if(!u) return null; u.ex=u.ex||{};
+  if(!u) return null; u.ex=(u.ex&&typeof u.ex==='object')?u.ex:{};
+  u.name=String(u.name||'').slice(0,40);
+  const okT=['kg','reps','time','dist'];
+  u.exNames=Object.fromEntries(Object.entries(u.exNames||{}).map(([k,n])=>[k,String(n).slice(0,60)]));
+  u.exTypes=Object.fromEntries(Object.entries(u.exTypes||{}).filter(([,t])=>okT.includes(t)));
+  for(const f of ['h','w','age']) if(u[f]!=null && !isFinite(Number(u[f]))) u[f]=null;
+  if(!['m','f',''].includes(u.g||'')) u.g='';
   for(const k in u.ex){
     const h=u.ex[k];
     u.ex[k]=(Array.isArray(h)?h:Object.values(h||{})).map(r=>{
       let iso=r.iso||null;
       if(!iso && r.d && r.d!=='לפני'){ const m=r.d.split('.'); if(m.length===3) iso=`20${m[2]}-${m[1].padStart(2,'0')}-${m[0].padStart(2,'0')}`; }
-      return {v:r.v??null, iso, note:r.note||''};
+      const v=Number(r.v); return {v:r.v==null||!isFinite(v)?null:v, iso:ISO_RE.test(iso||'')?iso:null, note:String(r.note||'').slice(0,80)};
     });
   }
   return u;
@@ -242,15 +253,18 @@ function loginView(){
 async function login(){
   const name=norm($('lName').value), code=$('lCode').value.trim();
   if(name.length<2) return toast('חסר שם');
+  if(name.length>40) return toast('שם ארוך מדי');
   if(!/^\d{4}$/.test(code)) return toast('קוד של 4 ספרות');
   let all; try{ all=await getAll(); }catch(e){ return toast('⚠️ אין חיבור לאינטרנט'); }
   const hit=Object.entries(all).find(([,u])=>norm(u.name)===name);
   if(hit){
-    if(hit[1].code!==code) return toast('הקוד לא נכון לשם הזה');
+    const hc=await codeHash(name,code);
+    if(hit[1].code!==hc && hit[1].code!==code) return toast('הקוד לא נכון לשם הזה');
+    if(hit[1].code===code){ hit[1].code=hc; try{ await j(base+'/'+hit[0]+'/code.json',{method:'PUT',body:JSON.stringify(hc)}); }catch(e){} }   // משדרגים קוד ישן לטביעה מוצפנת
     ME=hit[0]; USER=fix(hit[1]); VIEW='home';
   } else {
     ME='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-    USER={name,code,ex:{},t:Date.now(),pub:false};
+    USER={name,code:await codeHash(name,code),ex:{},t:Date.now(),pub:false};
     if(!await saveUser()) return;
     VIEW='profile';
   }
@@ -332,7 +346,7 @@ function homeView(){
   </div>`;
 }
 async function addEx(){
-  const n=norm($('newEx').value), t=$('newT').value; if(n.length<2) return toast('חסר שם תרגיל');
+  const n=norm($('newEx').value), t=$('newT').value; if(n.length<2) return toast('חסר שם תרגיל'); if(n.length>60) return toast('שם ארוך מדי');
   if(allEx(USER).some(e=>e.n===n)) return go('ex',n);
   USER.exNames=USER.exNames||{}; USER.exNames[exKey(n)]=n;
   USER.exTypes=USER.exTypes||{}; USER.exTypes[exKey(n)]=t;
@@ -441,7 +455,7 @@ async function editRow(i){   // מאמן בלבד
 }
 
 // ===== מצב מאמן =====
-function coachLogin(){ const p=prompt('קוד מאמן:'); if(p===null) return; if(p!==CLOUD.pin) return toast('קוד שגוי'); COACH=true; AS_COACH=false; VIEW='coach'; try{sessionStorage.setItem('pr_coach','1')}catch(e){} render(); }
+async function coachLogin(){ const p=prompt('קוד מאמן:'); if(p===null) return; if(await sha('bux1rm-coach|'+p.trim())!==CLOUD.pinHash) return toast('קוד שגוי'); COACH=true; AS_COACH=false; VIEW='coach'; try{sessionStorage.setItem('pr_coach','1')}catch(e){} render(); }
 async function coachView(){
   $('app').innerHTML='<div class="card hd muted">טוען…</div>';
   let all; try{ all=await getAll(); await loadEvents(); }catch(e){ $('app').innerHTML='<div class="card hd">⚠️ אין חיבור</div>'; return; }
@@ -464,12 +478,14 @@ async function coachView(){
     return `<div class="card u ${n%2?'hd':'hd2'}"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><button onclick="openAthlete('${id}')" style="text-align:right"><b>${esc(u.name)}</b> ✎</button><button class="lnk" onclick="resetCode('${id}')">איפוס קוד</button></div>
       <div class="muted">${[u.g==='m'?'גבר':u.g==='f'?'אישה':'',u.h&&r1(u.h)+' ס״מ',u.w&&r1(u.w)+' ק״ג',u.age&&'גיל '+r1(u.age),u.pub?'מופיע בלוח':''].filter(Boolean).join(' · ')||'בלי פרטים'}</div>${exs||'<div class="muted">עוד לא כתב ביומן</div>'}</div>`;}).join('')}`;
 }
-async function openAthlete(id){ try{ USER=await getUser(id); ME=id; AS_COACH=true; go('home'); }catch(e){ toast('⚠️ אין חיבור'); } }
+async function openAthlete(id){ if(!ID_RE.test(id)) return; try{ USER=await getUser(id); ME=id; AS_COACH=true; go('home'); }catch(e){ toast('⚠️ אין חיבור'); } }
 function leaveAthlete(){ AS_COACH=false; USER=null; ME=null; VIEW='coach'; render(); scrollTo(0,0); }
 async function resetCode(id){
   const c=prompt('קוד חדש של 4 ספרות למתאמן:'); if(c===null) return;
   if(!/^\d{4}$/.test(c.trim())) return toast('קוד של 4 ספרות');
-  try{ await j(base+'/'+id+'/code.json',{method:'PUT',body:JSON.stringify(c.trim())}); toast('הקוד עודכן ✓'); }catch(e){ toast('⚠️ לא נשמר'); }
+  if(!ID_RE.test(id)) return;
+  let nm; try{ nm=(await getUser(id)).name; }catch(e){ return toast('⚠️ אין חיבור'); }
+  try{ await j(base+'/'+id+'/code.json',{method:'PUT',body:JSON.stringify(await codeHash(nm,c.trim()))}); toast('הקוד עודכן ✓'); }catch(e){ toast('⚠️ לא נשמר'); }
 }
 async function addEvent(){
   const ex=$('evEx').value, iso=$('evDate').value||isoToday();
