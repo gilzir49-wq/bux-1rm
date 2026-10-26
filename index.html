@@ -77,7 +77,12 @@ header .sub{color:#d6e6d8;font-size:14px;margin-top:4px}
 .empty{color:var(--mute);text-align:center;padding:30px 10px}
 .lock{position:fixed;bottom:0;left:0;right:0;background:#0a100c;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;align-items:center;z-index:5}
 .lock .st{color:var(--mute);font-size:13px}
-.ro .add,.ro .try,.ro .mini{display:none}
+.ro .coach{display:none}
+select.in{width:100%;font-size:17px;font-weight:700;appearance:auto}
+.ath.mine{border-color:var(--green2);box-shadow:0 0 0 2px var(--green2)}
+.mineTag{color:var(--green2);font-size:13px;font-weight:800;margin-bottom:4px}
+.me{background:none;color:var(--gold);font-size:13px;text-decoration:underline;padding:4px 0}
+.hint{color:var(--mute);font-size:13px;margin-top:8px}
 .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a1a1a;padding:10px 16px;border-radius:12px;font-weight:800;z-index:9;display:none;max-width:90vw;text-align:center}
 @media(max-width:420px){.stat b{font-size:20px}.name{font-size:17px}}
 </style>
@@ -118,9 +123,14 @@ const PCTS = [60,70,80,90,95,100,102.5,105]; // אחוזים לחימום / ני
 
   <div id="viewLog">
     <div class="add">
-      <h3>➕ מתאמן חדש</h3>
+      <h3>👋 מי אתה?</h3>
+      <select class="in" id="meSel" onchange="pickMe(this.value)"></select>
+      <div class="hint">בוחרים את השם → מעדכנים שיא קודם אם צריך → רושמים כל ניסיון ב"עבר" או ✗</div>
+    </div>
+    <div class="add">
+      <h3>➕ לא מופיע ברשימה? הוסף את עצמך</h3>
       <div class="row">
-        <input class="in grow" id="nName" placeholder="שם המתאמן">
+        <input class="in grow" id="nName" placeholder="השם שלך">
         <input class="in kg" id="nPrev" type="number" inputmode="decimal" placeholder="שיא קודם">
       </div>
       <div class="row" style="justify-content:space-between;margin-top:8px">
@@ -147,8 +157,9 @@ const PCTS = [60,70,80,90,95,100,102.5,105]; // אחוזים לחימום / ני
 <script>
 // ===== מצב =====
 let ATH = {};              // id → {name, prev(null=לא זוכר), atts:[{w,ok}], t}
-let EDIT = false, TAB = 'log';
-try{ EDIT = localStorage.getItem('dl_edit')==='1'; TAB = localStorage.getItem('dl_tab')||'log'; }catch(e){}
+let EDIT = false, TAB = 'log', ME = '';   // EDIT = מצב מאמן, ME = המתאמן שמחזיק את הטלפון
+try{ EDIT = localStorage.getItem('dl_edit')==='1'; TAB = localStorage.getItem('dl_tab')||'log'; ME = localStorage.getItem('dl_me')||''; }catch(e){}
+function pickMe(id){ ME=id; try{localStorage.setItem('dl_me',id)}catch(e){} document.getElementById('q').value=''; render(); if(id) scrollTo({top:document.getElementById('list').offsetTop-10,behavior:'smooth'}); }
 const drafts = {};         // משקל לניסיון הבא לכל מתאמן (לא נשמר בענן)
 
 document.getElementById('sub').textContent = new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'}) + ' · קרוספיט באקס';
@@ -179,7 +190,10 @@ function nextW(id){
 function setTab(t){TAB=t;try{localStorage.setItem('dl_tab',t)}catch(e){}render();}
 function render(){
   document.getElementById('app').classList.toggle('ro',!EDIT);
-  document.getElementById('lockBtn').textContent = EDIT?'🔓 מצב מאמן פעיל — יציאה':'🔒 כניסת מאמן';
+  document.getElementById('lockBtn').textContent = EDIT?'🔓 מצב מאמן פעיל — יציאה':'🔒 מאמן';
+  const names=Object.entries(ATH).sort((x,y)=>x[1].name.localeCompare(y[1].name,'he'));
+  if(ME && !ATH[ME]) ME='';
+  document.getElementById('meSel').innerHTML='<option value="">— בחר את השם שלך —</option>'+names.map(([id,a])=>`<option value="${id}"${id===ME?' selected':''}>${esc(a.name)}</option>`).join('');
   document.getElementById('tLog').classList.toggle('on',TAB==='log');
   document.getElementById('tBoard').classList.toggle('on',TAB==='board');
   document.getElementById('viewLog').style.display = TAB==='log'?'':'none';
@@ -192,19 +206,21 @@ function render(){
 
   // רשימת רישום
   const q=document.getElementById('q').value.trim();
-  const items=all.filter(([,a])=>!q||a.name.includes(q)).sort((x,y)=>(y[1].t||0)-(x[1].t||0));
+  const items=all.filter(([,a])=>!q||a.name.includes(q)).sort((x,y)=>(y[0]===ME)-(x[0]===ME)||(y[1].t||0)-(x[1].t||0));
   document.getElementById('list').innerHTML = items.length? items.map(([id,a])=>{
     const s=status(a), b=best(a);
     const pcts = a.prev!=null ? `<div class="pcts">${PCTS.map(p=>`<span class="pct">${p}% <b>${fmt(Math.round(a.prev*p/100/STEP)*STEP)}</b></span>`).join('')}</div>` : '';
     const atts=(a.atts||[]).map((x,i)=>`<span class="att ${x.ok?'ok':'no'}">${fmt(x.w)}</span>`).join('');
-    return `<div class="ath ${s.k==='pr'?'pr':s.k==='first'?'first':''}">
+    const can = EDIT || id===ME;
+    return `<div class="ath ${id===ME?'mine':s.k==='pr'?'pr':s.k==='first'?'first':''}">
+      ${id===ME?'<div class="mineTag">⭐ הכרטיס שלי</div>':''}
       <div class="top"><div><div class="name">${esc(a.name)}</div>
         <div class="prev">שיא קודם: ${a.prev!=null?'<b>'+fmt(a.prev)+' ק״ג</b>':'לא זוכר'}</div></div>
         <span class="badge ${s.cls}">${s.txt}</span></div>
       <div class="best"><b>${b!=null?fmt(b):'—'}</b><span>ק״ג היום</span>${s.k==='pr'?`<span class="delta">+${fmt(b-a.prev)}</span>`:''}</div>
-      ${pcts}
+      ${can?pcts:''}
       ${atts?`<div class="atts">${atts}</div>`:''}
-      <div class="try">
+      ${can?`<div class="try">
         <button class="step" onclick="bump('${id}',-1)">−</button>
         <input class="in" type="number" inputmode="decimal" value="${fmt(nextW(id))}" onchange="drafts['${id}']=parseFloat(this.value)||0">
         <button class="step" onclick="bump('${id}',1)">+</button>
@@ -214,8 +230,8 @@ function render(){
       <div class="mini">
         <button onclick="undo('${id}')">↶ ביטול ניסיון אחרון</button>
         <button onclick="editPrev('${id}')">✏️ עריכת שם / שיא</button>
-        <button onclick="delAth('${id}')">🗑️ הסרה</button>
-      </div></div>`;
+        <button class="coach" onclick="delAth('${id}')">🗑️ הסרה</button>
+      </div>`:`<button class="me" onclick="pickMe('${id}')">זה אני →</button>`}</div>`;
   }).join('') : `<div class="empty">${all.length?'לא נמצא':'עוד אין מתאמנים. מוסיפים למעלה 👆'}</div>`;
 
   // לוח שיאים: קודם מי ששבר (לפי תוספת), אחריו שיא ראשון, אחריו השאר
@@ -230,10 +246,9 @@ function render(){
 }
 
 // ===== פעולות =====
-function need(){ if(!EDIT){toast('צריך כניסת מאמן 🔒');return false;} return true; }
+function need(id){ if(EDIT || (id && id===ME)) return true; toast(id?'אפשר לעדכן רק את הכרטיס שלך':'צריך כניסת מאמן 🔒'); return false; }
 function noMem(){ const n=document.getElementById('nNo').checked; const p=document.getElementById('nPrev'); p.disabled=n; if(n)p.value=''; }
 function addAth(){
-  if(!need())return;
   const name=nName.value.trim(); if(!name){toast('חסר שם');return;}
   const no=nNo.checked, prev=parseFloat(nPrev.value);
   if(!no && !(prev>0)){toast('לרשום שיא קודם, או לסמן "לא זוכר"');return;}
@@ -241,11 +256,12 @@ function addAth(){
   const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
   ATH[id]={name,prev:no?null:prev,atts:[],t:Date.now()};
   nName.value='';nPrev.value='';nNo.checked=false;noMem();
-  save(id); render(); nName.focus();
+  ME=id; try{localStorage.setItem('dl_me',id)}catch(e){}
+  save(id); render(); toast('נוספת! זה הכרטיס שלך ⭐');
 }
 function bump(id,d){ drafts[id]=Math.max(0,nextW(id)+d*STEP); render(); }
 function lift(id,ok){
-  if(!need())return;
+  if(!need(id))return;
   const a=ATH[id], w=nextW(id); if(!(w>0))return;
   const before = best(a)||0;
   a.atts=(a.atts||[]).concat([{w,ok}]); a.t=Date.now();
@@ -256,9 +272,9 @@ function lift(id,ok){
   } else drafts[id]=w;   // נכשל → נשאר על אותו משקל לניסיון הבא
   save(id); render();
 }
-function undo(id){ if(!need())return; const a=ATH[id]; if(!a.atts||!a.atts.length)return; a.atts=a.atts.slice(0,-1); delete drafts[id]; save(id); render(); }
+function undo(id){ if(!need(id))return; const a=ATH[id]; if(!a.atts||!a.atts.length)return; a.atts=a.atts.slice(0,-1); delete drafts[id]; save(id); render(); }
 function editPrev(id){
-  if(!need())return; const a=ATH[id];
+  if(!need(id))return; const a=ATH[id];
   const n=prompt('שם:',a.name); if(n===null)return;
   const p=prompt('שיא קודם בק״ג (ריק = לא זוכר):',a.prev??''); if(p===null)return;
   a.name=n.trim()||a.name; a.prev=parseFloat(p)>0?parseFloat(p):null; save(id); render();
