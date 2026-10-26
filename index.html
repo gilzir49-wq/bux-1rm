@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1410">
+<title>יום שיאים · דדליפט</title>
+<style>
+:root{
+  --bg:#0d1410; --card:#16211a; --card2:#1d2b22; --line:#2a3b30;
+  --text:#f2f5f0; --mute:#9fb0a4; --green:#1F5D24; --green2:#2f8a37;
+  --gold:#F1C93B; --red:#e0574f; --blue:#58a6ff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Arial,sans-serif;font-size:16px;padding-bottom:90px}
+button{font:inherit;color:var(--text);cursor:pointer;border:0}
+input{font:inherit;color:var(--text)}
+header{background:linear-gradient(135deg,var(--green),#123a16);padding:18px 16px 16px;border-bottom:3px solid var(--gold)}
+header h1{margin:0;font-size:24px}
+header h1 span{color:var(--gold)}
+header .sub{color:#d6e6d8;font-size:14px;margin-top:4px}
+.wrap{max-width:720px;margin:0 auto;padding:14px 14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.stat b{display:block;font-size:24px;color:var(--gold)}
+.stat small{color:var(--mute);font-size:12px}
+.tabs{display:flex;gap:6px;margin:6px 0 12px}
+.tabs button{flex:1;padding:10px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--mute);font-weight:600}
+.tabs button.on{background:var(--gold);color:#1a1a1a;border-color:var(--gold)}
+.add{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
+.add h3{margin:0 0 10px;font-size:17px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.in{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+.in:focus{outline:2px solid var(--gold);border-color:transparent}
+.grow{flex:1}
+.kg{width:110px;text-align:center}
+.chk{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:15px;padding:6px 2px}
+.chk input{width:20px;height:20px;accent-color:var(--gold)}
+.btn{background:var(--green2);color:#fff;padding:12px 16px;border-radius:12px;font-weight:700}
+.btn.gold{background:var(--gold);color:#1a1a1a}
+.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+.search{width:100%;margin-bottom:10px}
+.ath{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.ath.pr{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 6px 24px rgba(241,201,59,.12)}
+.ath.first{border-color:var(--blue)}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.name{font-size:19px;font-weight:800}
+.prev{color:var(--mute);font-size:14px;margin-top:2px}
+.badge{padding:5px 10px;border-radius:99px;font-size:13px;font-weight:700;white-space:nowrap}
+.b-pr{background:var(--gold);color:#1a1a1a}
+.b-first{background:var(--blue);color:#06213f}
+.b-eq{background:#3a4a3f;color:var(--text)}
+.b-wait{background:var(--card2);color:var(--mute)}
+.best{display:flex;align-items:baseline;gap:8px;margin:10px 0 4px}
+.best b{font-size:34px}
+.best .delta{color:var(--gold);font-weight:800}
+.pcts{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.pct{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:5px 8px;font-size:13px;color:var(--mute)}
+.pct b{color:var(--text)}
+.atts{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.att{padding:6px 10px;border-radius:10px;font-weight:700;font-size:14px;color:var(--text)}
+.att.ok{background:#1f4d26;border:1px solid var(--green2)}
+.att.no{background:#4a1f1d;border:1px solid var(--red);text-decoration:line-through}
+.try{display:flex;gap:6px;align-items:center;margin-top:8px}
+.step{width:44px;height:46px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:20px;font-weight:700;color:var(--text)}
+.try .in{width:90px;text-align:center;font-size:18px;font-weight:700;padding:10px 4px}
+.okb{background:var(--green2);color:#fff;padding:12px 14px;border-radius:12px;font-weight:800}
+.nob{background:var(--red);color:#fff;padding:12px 14px;border-radius:12px;font-weight:800}
+.mini{display:flex;gap:12px;margin-top:10px}
+.mini button{background:none;color:var(--mute);font-size:13px;text-decoration:underline;padding:4px 0}
+.board .li{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.board .rk{width:30px;height:30px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:800;color:var(--gold);flex:none}
+.board .nm{flex:1;font-weight:700}
+.board .nm small{display:block;color:var(--mute);font-weight:400;font-size:13px}
+.board .vl{text-align:left;font-weight:800;font-size:18px}
+.board .vl small{display:block;color:var(--gold);font-size:13px}
+.empty{color:var(--mute);text-align:center;padding:30px 10px}
+.lock{position:fixed;bottom:0;left:0;right:0;background:#0a100c;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;align-items:center;z-index:5}
+.lock .st{color:var(--mute);font-size:13px}
+.ro .add,.ro .try,.ro .mini{display:none}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a1a1a;padding:10px 16px;border-radius:12px;font-weight:800;z-index:9;display:none;max-width:90vw;text-align:center}
+@media(max-width:420px){.stat b{font-size:20px}.name{font-size:17px}}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     ✏️ לעריכה רק כאן: קוד העריכה ומקום השמירה
+     ============================================================ -->
+<script id="DATA">
+const CLOUD = {
+  url: "https://command-center-gal-default-rtdb.europe-west1.firebasedatabase.app",
+  node: "bux-deadlift-1rm",
+  pin: "1234"           // ← קוד העריכה של המאמנים
+};
+const TITLE = "יום שיאים · דדליפט 1RM";
+const STEP = 2.5;        // קפיצת משקל בכפתורי + / −
+const PCTS = [60,70,80,90,95,100,102.5,105]; // אחוזים לחימום / ניסיונות
+</script>
+
+<header>
+  <h1>🏋️ יום שיאים · <span>דדליפט</span></h1>
+  <div class="sub" id="sub"></div>
+</header>
+
+<div class="wrap" id="app">
+  <div class="stats">
+    <div class="stat"><b id="sAll">0</b><small>מתאמנים</small></div>
+    <div class="stat"><b id="sPR">0</b><small>שברו שיא</small></div>
+    <div class="stat"><b id="sFirst">0</b><small>שיא ראשון</small></div>
+    <div class="stat"><b id="sKg">0</b><small>ק״ג שנוספו</small></div>
+  </div>
+
+  <div class="tabs">
+    <button id="tLog" class="on" onclick="setTab('log')">📝 רישום</button>
+    <button id="tBoard" onclick="setTab('board')">🏆 לוח שיאים</button>
+  </div>
+
+  <div id="viewLog">
+    <div class="add">
+      <h3>➕ מתאמן חדש</h3>
+      <div class="row">
+        <input class="in grow" id="nName" placeholder="שם המתאמן">
+        <input class="in kg" id="nPrev" type="number" inputmode="decimal" placeholder="שיא קודם">
+      </div>
+      <div class="row" style="justify-content:space-between;margin-top:8px">
+        <label class="chk"><input type="checkbox" id="nNo" onchange="noMem()"> לא זוכר את השיא</label>
+        <button class="btn gold" onclick="addAth()">הוסף</button>
+      </div>
+    </div>
+    <input class="in search" id="q" placeholder="🔍 חיפוש מתאמן" oninput="render()">
+    <div id="list"></div>
+  </div>
+
+  <div id="viewBoard" class="board" style="display:none">
+    <div class="row" style="margin-bottom:10px"><button class="btn ghost grow" onclick="shareWA()">📲 שיתוף התוצאות בוואטסאפ</button></div>
+    <div id="boardList"></div>
+  </div>
+</div>
+
+<div class="lock">
+  <span class="st" id="syncSt">מתחבר…</span>
+  <button class="btn ghost" id="lockBtn" onclick="toggleEdit()">🔒 כניסת מאמן</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== מצב =====
+let ATH = {};              // id → {name, prev(null=לא זוכר), atts:[{w,ok}], t}
+let EDIT = false, TAB = 'log';
+try{ EDIT = localStorage.getItem('dl_edit')==='1'; TAB = localStorage.getItem('dl_tab')||'log'; }catch(e){}
+const drafts = {};         // משקל לניסיון הבא לכל מתאמן (לא נשמר בענן)
+
+document.getElementById('sub').textContent = new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'}) + ' · קרוספיט באקס';
+
+const fmt = n => (Math.round(n*10)/10).toString();
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2600);}
+
+// ===== חישובים =====
+function best(a){ const ok=(a.atts||[]).filter(x=>x.ok).map(x=>x.w); return ok.length?Math.max(...ok):null; }
+function status(a){
+  const b=best(a);
+  if(b==null) return {k:'wait',txt:'עוד לא הרים',cls:'b-wait'};
+  if(a.prev==null) return {k:'first',txt:'🆕 שיא חדש נקבע',cls:'b-first'};
+  if(b>a.prev) return {k:'pr',txt:'🔥 שבר שיא! +'+fmt(b-a.prev),cls:'b-pr'};
+  if(b===a.prev) return {k:'eq',txt:'השווה שיא',cls:'b-eq'};
+  return {k:'below',txt:'עוד לא שבר',cls:'b-wait'};
+}
+function nextW(id){
+  if(drafts[id]!=null) return drafts[id];
+  const a=ATH[id], b=best(a);
+  if(b!=null) return b+STEP;
+  if(a.prev!=null) return Math.round(a.prev*0.8/STEP)*STEP;
+  return 60;
+}
+
+// ===== תצוגה =====
+function setTab(t){TAB=t;try{localStorage.setItem('dl_tab',t)}catch(e){}render();}
+function render(){
+  document.getElementById('app').classList.toggle('ro',!EDIT);
+  document.getElementById('lockBtn').textContent = EDIT?'🔓 מצב מאמן פעיל — יציאה':'🔒 כניסת מאמן';
+  document.getElementById('tLog').classList.toggle('on',TAB==='log');
+  document.getElementById('tBoard').classList.toggle('on',TAB==='board');
+  document.getElementById('viewLog').style.display = TAB==='log'?'':'none';
+  document.getElementById('viewBoard').style.display = TAB==='board'?'':'none';
+
+  const all=Object.entries(ATH);
+  let pr=0,first=0,kg=0;
+  all.forEach(([,a])=>{const s=status(a); if(s.k==='pr'){pr++;kg+=best(a)-a.prev;} if(s.k==='first')first++;});
+  sAll.textContent=all.length; sPR.textContent=pr; sFirst.textContent=first; sKg.textContent=fmt(kg);
+
+  // רשימת רישום
+  const q=document.getElementById('q').value.trim();
+  const items=all.filter(([,a])=>!q||a.name.includes(q)).sort((x,y)=>(y[1].t||0)-(x[1].t||0));
+  document.getElementById('list').innerHTML = items.length? items.map(([id,a])=>{
+    const s=status(a), b=best(a);
+    const pcts = a.prev!=null ? `<div class="pcts">${PCTS.map(p=>`<span class="pct">${p}% <b>${fmt(Math.round(a.prev*p/100/STEP)*STEP)}</b></span>`).join('')}</div>` : '';
+    const atts=(a.atts||[]).map((x,i)=>`<span class="att ${x.ok?'ok':'no'}">${fmt(x.w)}</span>`).join('');
+    return `<div class="ath ${s.k==='pr'?'pr':s.k==='first'?'first':''}">
+      <div class="top"><div><div class="name">${esc(a.name)}</div>
+        <div class="prev">שיא קודם: ${a.prev!=null?'<b>'+fmt(a.prev)+' ק״ג</b>':'לא זוכר'}</div></div>
+        <span class="badge ${s.cls}">${s.txt}</span></div>
+      <div class="best"><b>${b!=null?fmt(b):'—'}</b><span>ק״ג היום</span>${s.k==='pr'?`<span class="delta">+${fmt(b-a.prev)}</span>`:''}</div>
+      ${pcts}
+      ${atts?`<div class="atts">${atts}</div>`:''}
+      <div class="try">
+        <button class="step" onclick="bump('${id}',-1)">−</button>
+        <input class="in" type="number" inputmode="decimal" value="${fmt(nextW(id))}" onchange="drafts['${id}']=parseFloat(this.value)||0">
+        <button class="step" onclick="bump('${id}',1)">+</button>
+        <button class="okb" onclick="lift('${id}',true)">✓ עבר</button>
+        <button class="nob" onclick="lift('${id}',false)">✗</button>
+      </div>
+      <div class="mini">
+        <button onclick="undo('${id}')">↶ ביטול ניסיון אחרון</button>
+        <button onclick="editPrev('${id}')">✏️ עריכת שם / שיא</button>
+        <button onclick="delAth('${id}')">🗑️ הסרה</button>
+      </div></div>`;
+  }).join('') : `<div class="empty">${all.length?'לא נמצא':'עוד אין מתאמנים. מוסיפים למעלה 👆'}</div>`;
+
+  // לוח שיאים: קודם מי ששבר (לפי תוספת), אחריו שיא ראשון, אחריו השאר
+  const order={pr:0,first:1,eq:2,below:3,wait:4};
+  const rows=all.map(([id,a])=>({a,s:status(a),b:best(a)})).sort((x,y)=>
+    order[x.s.k]-order[y.s.k] || (x.s.k==='pr'?(y.b-y.a.prev)-(x.b-x.a.prev):(y.b||0)-(x.b||0)));
+  document.getElementById('boardList').innerHTML = rows.length? rows.map((r,i)=>`
+    <div class="li"><div class="rk">${r.s.k==='pr'?'🔥':r.s.k==='first'?'🆕':i+1}</div>
+      <div class="nm">${esc(r.a.name)}<small>${r.a.prev!=null?'קודם '+fmt(r.a.prev):'לא זכר'} · ${r.s.txt}</small></div>
+      <div class="vl">${r.b!=null?fmt(r.b):'—'}${r.s.k==='pr'?`<small>+${fmt(r.b-r.a.prev)} ק״ג</small>`:''}</div></div>`).join('')
+    : '<div class="empty">עוד אין תוצאות</div>';
+}
+
+// ===== פעולות =====
+function need(){ if(!EDIT){toast('צריך כניסת מאמן 🔒');return false;} return true; }
+function noMem(){ const n=document.getElementById('nNo').checked; const p=document.getElementById('nPrev'); p.disabled=n; if(n)p.value=''; }
+function addAth(){
+  if(!need())return;
+  const name=nName.value.trim(); if(!name){toast('חסר שם');return;}
+  const no=nNo.checked, prev=parseFloat(nPrev.value);
+  if(!no && !(prev>0)){toast('לרשום שיא קודם, או לסמן "לא זוכר"');return;}
+  if(Object.values(ATH).some(a=>a.name===name)){toast('המתאמן כבר ברשימה');return;}
+  const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  ATH[id]={name,prev:no?null:prev,atts:[],t:Date.now()};
+  nName.value='';nPrev.value='';nNo.checked=false;noMem();
+  save(id); render(); nName.focus();
+}
+function bump(id,d){ drafts[id]=Math.max(0,nextW(id)+d*STEP); render(); }
+function lift(id,ok){
+  if(!need())return;
+  const a=ATH[id], w=nextW(id); if(!(w>0))return;
+  const before = best(a)||0;
+  a.atts=(a.atts||[]).concat([{w,ok}]); a.t=Date.now();
+  delete drafts[id];
+  if(ok){
+    if(a.prev!=null && w>a.prev && w>before) toast('🔥 '+a.name+' שבר שיא! '+fmt(w)+' ק״ג (+'+fmt(w-a.prev)+')');
+    else if(a.prev==null) toast('🆕 '+a.name+': '+fmt(w)+' ק״ג נרשם');
+  } else drafts[id]=w;   // נכשל → נשאר על אותו משקל לניסיון הבא
+  save(id); render();
+}
+function undo(id){ if(!need())return; const a=ATH[id]; if(!a.atts||!a.atts.length)return; a.atts=a.atts.slice(0,-1); delete drafts[id]; save(id); render(); }
+function editPrev(id){
+  if(!need())return; const a=ATH[id];
+  const n=prompt('שם:',a.name); if(n===null)return;
+  const p=prompt('שיא קודם בק״ג (ריק = לא זוכר):',a.prev??''); if(p===null)return;
+  a.name=n.trim()||a.name; a.prev=parseFloat(p)>0?parseFloat(p):null; save(id); render();
+}
+function delAth(id){
+  if(!need())return;
+  if(!confirm('להסיר את '+ATH[id].name+' וכל הניסיונות שלו?'))return;
+  delete ATH[id]; remove(id); render();
+}
+function toggleEdit(){
+  if(EDIT){EDIT=false;}
+  else{ const p=prompt('קוד מאמן:'); if(p!==CLOUD.pin){ if(p!==null)toast('קוד שגוי');return;} EDIT=true; }
+  try{localStorage.setItem('dl_edit',EDIT?'1':'0')}catch(e){}
+  render();
+}
+function shareWA(){
+  const rows=Object.values(ATH).map(a=>({a,s:status(a),b:best(a)}));
+  const prs=rows.filter(r=>r.s.k==='pr').sort((x,y)=>(y.b-y.a.prev)-(x.b-x.a.prev));
+  const fs=rows.filter(r=>r.s.k==='first');
+  let t='🏋️ *יום שיאים דדליפט — קרוספיט באקס*\n\n';
+  if(prs.length) t+='🔥 *שברו שיא:*\n'+prs.map(r=>`• ${r.a.name}: ${fmt(r.b)} ק״ג (+${fmt(r.b-r.a.prev)})`).join('\n')+'\n\n';
+  if(fs.length) t+='🆕 *שיא חדש נקבע:*\n'+fs.map(r=>`• ${r.a.name}: ${fmt(r.b)} ק״ג`).join('\n')+'\n\n';
+  t+='כל הכבוד לכולם 💪💛💚';
+  location.href='https://wa.me/?text='+encodeURIComponent(t);
+}
+
+// ===== סנכרון לענן (כל מתאמן נשמר בנפרד, כך ששני מאמנים לא דורסים זה את זה) =====
+const base=CLOUD.url+'/'+CLOUD.node+'/athletes';
+function setSt(t){document.getElementById('syncSt').textContent=t;}
+async function save(id){
+  try{ const r=await fetch(base+'/'+id+'.json',{method:'PUT',body:JSON.stringify(ATH[id])}); if(!r.ok)throw 0; setSt('✓ נשמר '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})); }
+  catch(e){ setSt('⚠️ לא נשמר — בודק חיבור'); toast('לא נשמר! בדוק אינטרנט ונסה שוב'); }
+}
+async function remove(id){ try{ await fetch(base+'/'+id+'.json',{method:'DELETE'}); }catch(e){} }
+async function pull(){
+  try{
+    const r=await fetch(base+'.json'); if(!r.ok)throw 0;
+    const d=(await r.json())||{};
+    Object.values(d).forEach(a=>{ if(!Array.isArray(a.atts)) a.atts=a.atts?Object.values(a.atts):[]; if(a.prev===undefined)a.prev=null; });
+    const changed=JSON.stringify(d)!==JSON.stringify(ATH);
+    ATH=d; setSt('🟢 מחובר · מתעדכן חי');
+    const ae=document.activeElement; const typing = ae && ae.tagName==='INPUT';
+    if(changed && !typing) render();
+  }catch(e){ setSt('⚠️ אין חיבור'); }
+}
+render(); pull(); setInterval(pull,5000);
+</script>
+</body>
+</html>
