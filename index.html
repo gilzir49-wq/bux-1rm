@@ -3,66 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0d1410">
-<title>השיאים שלי · באקס</title>
+<meta name="theme-color" content="#5a3a1e">
+<title>יומן השיאים שלי · באקס</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0d1410; --card:#16211a; --card2:#1d2b22; --line:#2a3b30;
-  --text:#f2f5f0; --mute:#9fb0a4; --green:#1F5D24; --green2:#2f8a37;
-  --gold:#F1C93B; --red:#e0574f; --blue:#58a6ff;
+  --board:#24402f; --board2:#1d3527;
+  --chalk:#f6e27f;                 /* גיר צהוב */
+  --white:rgba(244,242,230,.82);   /* גיר לבן */
+  --line:rgba(246,226,127,.55);
+  --soft:rgba(246,226,127,.10);
+  --up:#b9f0a4; --down:#ffa391; --new:#a9d8ff;
+  --wood:#6b4423; --wood2:#4a2e16;
+  --hand:'Amatic SC', 'Comic Sans MS', cursive;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Arial,sans-serif;font-size:16px;padding-bottom:40px}
-button{font:inherit;color:var(--text);cursor:pointer;border:0}
-input,select{font:inherit;color:var(--text)}
-header{background:linear-gradient(135deg,var(--green),#123a16);padding:18px 16px 16px;border-bottom:3px solid var(--gold);display:flex;justify-content:space-between;align-items:center;gap:10px}
-header h1{margin:0;font-size:22px}
-header h1 span{color:var(--gold)}
-header .sub{color:#d6e6d8;font-size:13px;margin-top:3px}
-.hbtn{background:rgba(0,0,0,.25);color:#fff;padding:8px 12px;border-radius:10px;font-size:14px;white-space:nowrap}
-.wrap{max-width:640px;margin:0 auto;padding:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
-.card h2{margin:0 0 12px;font-size:19px}
-.card h3{margin:0 0 10px;font-size:17px}
-label.l{display:block;color:var(--mute);font-size:14px;margin:10px 0 5px}
-.in{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0;font-size:17px}
-.in:focus{outline:2px solid var(--gold);border-color:transparent}
-.in:disabled{opacity:.4}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.btn{display:block;width:100%;background:var(--gold);color:#1a1a1a;padding:14px;border-radius:12px;font-weight:800;font-size:17px;margin-top:14px}
-.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line);font-weight:700}
-.chk{display:flex;align-items:center;gap:8px;color:var(--text);font-size:16px;margin-top:10px}
-.chk input{width:22px;height:22px;accent-color:var(--gold)}
-.muted{color:var(--mute);font-size:14px}
-.prof{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.chip{background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:5px 11px;font-size:14px;color:var(--text)}
-.exgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ex{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:right;color:var(--text);min-height:74px}
-.ex b{display:block;font-size:16px}
-.ex small{display:block;color:var(--mute);font-size:13px;margin-top:4px}
-.ex.has{border-color:var(--green2)}
-.up{color:#5fd068;font-weight:800}
-.down{color:var(--red);font-weight:800}
-.eq{color:var(--mute);font-weight:800}
-.new{color:var(--blue);font-weight:800}
-.big{display:flex;align-items:baseline;gap:10px;margin:6px 0}
-.big b{font-size:42px}
-.res{border-radius:14px;padding:14px;text-align:center;font-size:20px;font-weight:800;margin:10px 0}
-.res.up{background:rgba(47,138,55,.2);border:1px solid var(--green2)}
-.res.down{background:rgba(224,87,79,.15);border:1px solid var(--red)}
-.res.eq{background:var(--card2);border:1px solid var(--line);color:var(--text)}
-.res.new{background:rgba(88,166,255,.12);border:1px solid var(--blue)}
-.hist .r{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
-.hist .r:last-child{border:0}
-.del{background:none;color:var(--mute);font-size:13px;text-decoration:underline;padding:2px 6px}
-.back{background:none;color:var(--gold);font-weight:700;padding:4px 0;margin-bottom:8px}
-.ulist .u{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
-.ulist .u b{font-size:17px}
-.ulist .exr{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;color:var(--text)}
-.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a1a1a;padding:10px 16px;border-radius:12px;font-weight:800;z-index:9;display:none;max-width:90vw;text-align:center}
-.foot{text-align:center;margin-top:20px}
-.foot button{background:none;color:var(--mute);font-size:13px;text-decoration:underline}
+html{background:linear-gradient(135deg,var(--wood),var(--wood2) 60%,var(--wood));min-height:100%}
+body{
+  margin:10px;min-height:calc(100vh - 20px);border-radius:6px;
+  background:
+    radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.07),transparent 45%),
+    radial-gradient(ellipse at 80% 70%,rgba(255,255,255,.05),transparent 50%),
+    radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.25),transparent 60%),
+    linear-gradient(160deg,var(--board),var(--board2));
+  box-shadow:inset 0 0 50px rgba(0,0,0,.55),0 0 0 4px var(--wood2),0 8px 30px rgba(0,0,0,.5);
+  color:var(--chalk);font-family:var(--hand);font-weight:700;font-size:23px;line-height:1.25;
+  padding-bottom:30px;letter-spacing:.3px
+}
+/* ניחוח גיר: הילה רכה סביב הכיתוב */
+body,button,input{text-shadow:0 0 1px rgba(246,226,127,.7),0 0 7px rgba(246,226,127,.18)}
+button{font:inherit;color:var(--chalk);cursor:pointer;border:0;background:none}
+input{font:inherit;color:var(--chalk)}
+::placeholder{color:rgba(246,226,127,.38)}
+/* מסגרת "מצוירת ביד" */
+.hd{border:2px solid var(--line);border-radius:255px 14px 225px 14px/14px 225px 14px 255px}
+.hd2{border:2px solid var(--line);border-radius:14px 225px 14px 255px/255px 14px 225px 14px}
+
+header{padding:18px 18px 6px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h1{margin:0;font-size:44px;line-height:1}
+header .sub{color:var(--white);font-size:22px}
+.hbtn{color:var(--white);font-size:21px;text-decoration:underline;padding:6px}
+.scribble{height:10px;margin:0 18px 6px;background:none;border-bottom:3px solid var(--line);border-radius:0 0 50% 40%/0 0 10px 6px;opacity:.8}
+.wrap{max-width:640px;margin:0 auto;padding:10px 16px}
+.card{padding:16px 18px;margin-bottom:16px;background:rgba(0,0,0,.08)}
+.card h2{margin:0 0 8px;font-size:36px;line-height:1.05}
+.card h3{margin:0 0 8px;font-size:30px}
+label.l{display:block;color:var(--white);font-size:23px;margin:10px 0 4px}
+.in{width:100%;background:rgba(0,0,0,.18);border:0;border-bottom:2px dashed var(--line);border-radius:4px;padding:8px 10px;min-width:0;font-size:28px}
+.in:focus{outline:none;background:rgba(0,0,0,.28);border-bottom-style:solid}
+.in:disabled{opacity:.35}
+input[type=date].in{font-size:24px;color-scheme:dark}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+.btn{display:block;width:100%;background:var(--chalk);color:var(--board2);text-shadow:none;padding:10px;font-size:32px;margin-top:16px;border-radius:255px 14px 225px 14px/14px 225px 14px 255px}
+.btn.ghost{background:var(--soft);color:var(--chalk);border:2px dashed var(--line);font-size:26px;padding:6px}
+.chk{display:flex;align-items:center;gap:10px;color:var(--white);font-size:26px;margin-top:10px}
+.chk input{width:22px;height:22px;accent-color:var(--chalk)}
+.muted{color:var(--white);font-size:22px}
+.prof{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.chip{padding:2px 12px;font-size:23px;color:var(--white);border:2px solid rgba(244,242,230,.4);border-radius:30px 8px 30px 8px/8px 30px 8px 30px}
+.exgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ex{padding:10px 12px;text-align:right;min-height:78px;background:rgba(0,0,0,.08)}
+.ex:nth-child(odd){transform:rotate(-.6deg)} .ex:nth-child(even){transform:rotate(.5deg)}
+.ex b{display:block;font-size:28px;line-height:1}
+.ex small{display:block;color:var(--white);font-size:22px;margin-top:4px}
+.ex.has{background:var(--soft)}
+.up{color:var(--up)} .down{color:var(--down)} .eq{color:var(--white)} .new{color:var(--new)}
+.big{display:flex;align-items:baseline;gap:10px;margin:2px 0}
+.big b{font-size:72px;line-height:1}
+.big span{color:var(--white)}
+.res{padding:8px 12px;text-align:center;font-size:32px;margin:10px 0}
+.res.up{border-color:var(--up)} .res.down{border-color:var(--down)} .res.new{border-color:var(--new)}
+.chart{width:100%;height:150px;display:block;margin:6px 0}
+.r{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:2px dashed rgba(246,226,127,.25)}
+.r:last-child{border:0}
+.r .dt{color:var(--white);font-size:22px;white-space:nowrap}
+.r .nt{display:block;color:var(--white);font-size:21px;font-weight:400}
+.r .vv{text-align:left;white-space:nowrap}
+.del{color:var(--white);font-size:19px;text-decoration:underline;padding:0 4px;opacity:.7}
+.back{color:var(--chalk);font-size:26px;padding:4px 0;margin-bottom:6px;text-decoration:underline}
+.u{padding:12px 14px;margin-bottom:12px}
+.u b{font-size:30px}
+.exr{display:flex;justify-content:space-between;font-size:23px;padding:2px 0}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) rotate(-1deg);background:var(--chalk);color:var(--board2);text-shadow:none;padding:8px 18px;font-size:28px;z-index:9;display:none;max-width:90vw;text-align:center;border-radius:255px 14px 225px 14px/14px 225px 14px 255px;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.foot{text-align:center;margin-top:18px}
+.foot button{color:var(--white);font-size:20px;text-decoration:underline}
+.empty{color:var(--white);text-align:center;padding:8px}
+@media(max-width:380px){body{font-size:21px}.exgrid{gap:8px}.ex b{font-size:25px}}
 </style>
 </head>
 <body>
@@ -84,9 +113,10 @@ const EXERCISES = [
 </script>
 
 <header>
-  <div><h1>🏋️ השיאים <span>שלי</span></h1><div class="sub">קרוספיט באקס</div></div>
+  <div><h1>יומן השיאים שלי</h1><div class="sub">קרוספיט באקס · 1RM</div></div>
   <button class="hbtn" id="hBtn" onclick="logout()" style="display:none">יציאה</button>
 </header>
+<div class="scribble"></div>
 
 <div class="wrap" id="app"></div>
 <div class="toast" id="toast"></div>
@@ -100,7 +130,8 @@ try{ ME=localStorage.getItem('pr_me'); }catch(e){}
 const $ = id => document.getElementById(id);
 const fmt = n => (Math.round(n*10)/10).toString();
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const today = () => new Date().toLocaleDateString('he-IL',{day:'numeric',month:'numeric',year:'2-digit'});
+const isoToday = () => { const d=new Date(); return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); };
+const showDate = iso => { if(!iso) return 'לפני'; const [y,m,d]=iso.split('-'); return `${+d}.${+m}.${y.slice(2)}`; };
 const norm = s => s.trim().replace(/\s+/g,' ');
 function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2600);}
 
@@ -111,21 +142,36 @@ async function saveUser(){
   try{ const r=await fetch(base+'/'+ME+'.json',{method:'PUT',body:JSON.stringify(USER)}); if(!r.ok)throw 0; return true; }
   catch(e){ toast('⚠️ לא נשמר — בדוק אינטרנט ונסה שוב'); return false; }
 }
-function fix(u){ if(!u) return null; u.ex=u.ex||{}; for(const k in u.ex){ const h=u.ex[k]; u.ex[k]=(Array.isArray(h)?h:Object.values(h||{})).map(r=>({v:r.v??null,d:r.d})); } return u; }
+// רשומה ביומן: {v: ק״ג או null (=לא זכור), iso: תאריך או ריק (=התוצאה מלפני), note: הערה}
+function fix(u){
+  if(!u) return null; u.ex=u.ex||{};
+  for(const k in u.ex){
+    const h=u.ex[k];
+    u.ex[k]=(Array.isArray(h)?h:Object.values(h||{})).map(r=>({v:r.v??null, iso:r.iso||null, note:r.note||'', d:r.d}));
+    // רשומות ישנות בלי תאריך מלא — ממירים מהתצוגה הקצרה (26.10.26)
+    u.ex[k].forEach(r=>{ if(!r.iso && r.d && r.d!=='לפני'){ const m=r.d.split('.'); if(m.length===3) r.iso=`20${m[2]}-${m[1].padStart(2,'0')}-${m[0].padStart(2,'0')}`; } delete r.d; });
+  }
+  return u;
+}
+const sortH = h => h.sort((a,b)=> (a.iso?1:0)-(b.iso?1:0) || String(a.iso).localeCompare(String(b.iso)));
 const exKey = name => name.replace(/[.#$\[\]\/]/g,'_');
+const exName = (u,k) => (u.exNames||{})[k] || EXERCISES.find(n=>exKey(n)===k) || k;
 
 // ===== השוואת תוצאות =====
-// היסטוריה של תרגיל: [{v: מספר או null (=לא זכור), d: תאריך}]
+function cmpPair(prev,last){
+  if(!prev) return {k:'eq',txt:''};
+  if(prev.v==null) return {k:'new',txt:'★ שיא ראשון נקבע'};
+  const d=last.v-prev.v, p=prev.v?Math.round(d/prev.v*1000)/10:0;
+  if(d>0) return {k:'up',d,txt:`▲ עלייה של ${fmt(d)} ק״ג (+${p}%)`};
+  if(d<0) return {k:'down',d,txt:`▼ ירידה של ${fmt(-d)} ק״ג (${p}%)`};
+  return {k:'eq',d:0,txt:'= ללא שינוי'};
+}
 function cmp(h){
   if(!h||!h.length) return null;
-  const last=h[h.length-1]; if(h.length<2) return {k:'eq',last:last.v,txt:''};
-  const prev=h[h.length-2];
-  if(prev.v==null) return {k:'new',last:last.v,txt:'🆕 שיא ראשון נקבע'};
-  const d=last.v-prev.v, p=prev.v?Math.round(d/prev.v*1000)/10:0;
-  if(d>0) return {k:'up',last:last.v,prev:prev.v,txt:`⬆️ עלייה של ${fmt(d)} ק״ג (+${p}%)`};
-  if(d<0) return {k:'down',last:last.v,prev:prev.v,txt:`⬇️ ירידה של ${fmt(-d)} ק״ג (${p}%)`};
-  return {k:'eq',last:last.v,prev:prev.v,txt:'⏸️ ללא שינוי'};
+  const last=h[h.length-1];
+  return {...cmpPair(h[h.length-2],last), last:last.v, prev:h.length>1?h[h.length-2].v:null};
 }
+const icon = k => ({up:'▲',down:'▼',new:'חדש!'}[k]||'');
 const bw = v => USER&&USER.w&&v ? ` · פי ${fmt(v/USER.w)} ממשקל הגוף` : '';
 
 // ===== מסכים =====
@@ -141,13 +187,13 @@ function render(){
 
 function loginView(){
   $('app').innerHTML=`
-  <div class="card"><h2>👋 כניסת מתאמן</h2>
+  <div class="card hd"><h2>כניסת מתאמן</h2>
     <label class="l">שם מלא</label>
     <input class="in" id="lName" placeholder="לדוגמה: שני כהן" autocomplete="name">
     <label class="l">קוד אישי (4 ספרות)</label>
-    <input class="in" id="lCode" type="tel" inputmode="numeric" maxlength="4" placeholder="נכנס ראשונה? בחר קוד שתזכור">
-    <div class="muted" style="margin-top:8px">הקוד שומר שרק אתה תוכל לעדכן את התוצאות שלך.</div>
-    <button class="btn" onclick="login()">כניסה</button>
+    <input class="in" id="lCode" type="tel" inputmode="numeric" maxlength="4" placeholder="פעם ראשונה? בחר קוד שתזכור">
+    <div class="muted" style="margin-top:8px">הקוד שומר שרק אתה תוכל לכתוב ביומן שלך.</div>
+    <button class="btn" onclick="login()">כניסה ליומן</button>
   </div>`;
 }
 async function login(){
@@ -174,9 +220,9 @@ function profileView(){
   const u=USER;
   $('app').innerHTML=`
   <button class="back" onclick="go('home')">→ ${u.h||u.w||u.age?'חזרה':'דלג, אמלא אחר כך'}</button>
-  <div class="card"><h2>📋 הפרטים שלי</h2>
-    <div class="muted">לא חובה, אבל עוזר להשוות התקדמות (למשל כמה אתה מרים ביחס למשקל הגוף).</div>
-    <div class="three" style="margin-top:6px">
+  <div class="card hd"><h2>הפרטים שלי</h2>
+    <div class="muted">לא חובה — עוזר לראות כמה אתה מרים ביחס למשקל הגוף.</div>
+    <div class="three" style="margin-top:4px">
       <div><label class="l">גובה (ס״מ)</label><input class="in" id="pH" type="number" inputmode="numeric" value="${u.h||''}"></div>
       <div><label class="l">משקל (ק״ג)</label><input class="in" id="pW" type="number" inputmode="decimal" value="${u.w||''}"></div>
       <div><label class="l">גיל</label><input class="in" id="pA" type="number" inputmode="numeric" value="${u.age||''}"></div>
@@ -193,25 +239,36 @@ function go(v,ex){ VIEW=v; if(ex!==undefined)EX=ex; render(); scrollTo(0,0); }
 function openEx(i){ go('ex', allEx()[i]); }
 function allEx(){ return [...EXERCISES, ...Object.values(USER.exNames||{}).filter(n=>!EXERCISES.includes(n))]; }
 
+// כל הרשומות של המתאמן לפי תאריך — זה "היומן"
+function journal(u){
+  const out=[];
+  for(const k in u.ex){ const h=u.ex[k]; h.forEach((r,i)=>{ if(r.iso) out.push({...r, ex:exName(u,k), c:cmpPair(h[i-1],r)}); }); }
+  return out.sort((a,b)=>b.iso.localeCompare(a.iso));
+}
+
 function homeView(){
   const u=USER;
   const tiles=allEx().map((n,i)=>{
-    const h=u.ex[exKey(n)], c=cmp(h);
-    const ic={up:'⬆️',down:'⬇️',new:'🆕'}[c&&c.k]||'';
-    const sub = !c ? 'עוד לא הוזן' : c.last==null ? 'לא זכור' : `${fmt(c.last)} ק״ג ${ic?`<span class="${c.k}">${ic}</span>`:''}`;
-    return `<button class="ex ${c?'has':''}" onclick="openEx(${i})"><b>${esc(n)}</b><small>${sub}</small></button>`;
+    const c=cmp(u.ex[exKey(n)]);
+    const sub = !c ? 'עוד לא נכתב' : c.last==null ? 'לא זכור' : `${fmt(c.last)} ק״ג <span class="${c.k}">${icon(c.k)}</span>`;
+    return `<button class="ex ${i%2?'hd':'hd2'} ${c?'has':''}" onclick="openEx(${i})"><b>${esc(n)}</b><small>${sub}</small></button>`;
   }).join('');
+  const j=journal(u).slice(0,40);
   $('app').innerHTML=`
-  <div class="card"><h2>היי ${esc(u.name)} 💪</h2>
+  <div class="card hd2"><h2>היי ${esc(u.name)} 💪</h2>
     <div class="prof">
-      ${u.h?`<span class="chip">📏 ${fmt(u.h)} ס״מ</span>`:''}${u.w?`<span class="chip">⚖️ ${fmt(u.w)} ק״ג</span>`:''}${u.age?`<span class="chip">🎂 גיל ${fmt(u.age)}</span>`:''}
-      <button class="chip" onclick="go('profile')">✏️ ${u.h||u.w||u.age?'עדכון פרטים':'הוספת גובה, משקל וגיל'}</button>
+      ${u.h?`<span class="chip">${fmt(u.h)} ס״מ</span>`:''}${u.w?`<span class="chip">${fmt(u.w)} ק״ג</span>`:''}${u.age?`<span class="chip">גיל ${fmt(u.age)}</span>`:''}
+      <button class="chip" onclick="go('profile')">✎ ${u.h||u.w||u.age?'עדכון פרטים':'הוספת גובה, משקל וגיל'}</button>
     </div>
   </div>
-  <div class="card"><h3>בחר תרגיל להזנת תוצאה</h3>
+  <div class="card hd"><h3>בחר תרגיל לכתיבה ביומן</h3>
     <div class="exgrid">${tiles}</div>
     <label class="l">תרגיל אחר</label>
-    <div class="two"><input class="in" id="newEx" placeholder="שם התרגיל"><button class="btn ghost" style="margin:0" onclick="addEx()">➕ הוסף</button></div>
+    <div class="two"><input class="in" id="newEx" placeholder="שם התרגיל"><button class="btn ghost" style="margin:0" onclick="addEx()">+ הוסף</button></div>
+  </div>
+  <div class="card hd2"><h3>📖 היומן שלי</h3>
+    ${j.length? j.map(r=>`<div class="r"><span><span class="dt">${showDate(r.iso)}</span> · ${esc(r.ex)}${r.note?`<span class="nt">„${esc(r.note)}“</span>`:''}</span><span class="vv">${fmt(r.v)} ק״ג <span class="${r.c.k}">${r.c.k==='up'?'+'+fmt(r.c.d):r.c.k==='down'?fmt(r.c.d):icon(r.c.k)}</span></span></div>`).join('')
+      : '<div class="empty">היומן עוד ריק — בוחרים תרגיל למעלה וכותבים את התוצאה הראשונה ✎</div>'}
   </div>`;
 }
 async function addEx(){
@@ -220,58 +277,78 @@ async function addEx(){
   if(await saveUser()) go('ex',n);
 }
 
+// גרף התקדמות בקו גיר
+function chart(h){
+  const pts=h.filter(r=>r.v!=null); if(pts.length<2) return '';
+  const W=600,H=160,P=36, vs=pts.map(r=>r.v), mn=Math.min(...vs), mx=Math.max(...vs), rg=(mx-mn)||1;
+  const xy=pts.map((r,i)=>[W-P-(i*(W-2*P)/(pts.length-1)), H-P-((r.v-mn)/rg)*(H-2*P)]); // ימין→שמאל
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-label="גרף התקדמות">
+    <polyline points="${xy.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#f6e27f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 3" opacity=".9"/>
+    ${xy.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="#f6e27f"/><text x="${p[0]}" y="${p[1]-12}" fill="#f6e27f" font-family="Amatic SC" font-weight="700" font-size="24" text-anchor="middle">${fmt(pts[i].v)}</text>`).join('')}
+  </svg>`;
+}
+
 function exView(){
   const k=exKey(EX), h=USER.ex[k]||[], c=cmp(h);
   const first=!h.length;
-  const rows=h.map((r,i)=>({...r,i})).reverse().map(r=>`<div class="r"><span>${esc(r.d)}</span><span><b>${r.v==null?'לא זכור':fmt(r.v)+' ק״ג'}</b>${r.i===h.length-1?` <button class="del" onclick="delLast()">מחיקה</button>`:''}</span></div>`).join('');
+  const rows=h.map((r,i)=>({...r,i,c:cmpPair(h[i-1],r)})).reverse().map(r=>`<div class="r"><span><span class="dt">${showDate(r.iso)}</span>${r.note?`<span class="nt">„${esc(r.note)}“</span>`:''}</span><span class="vv">${r.v==null?'לא זכור':fmt(r.v)+' ק״ג'} <span class="${r.c.k}">${r.c.k==='up'?'+'+fmt(r.c.d):r.c.k==='down'?fmt(r.c.d):''}</span><br><button class="del" onclick="delRow(${r.i})">מחיקה</button></span></div>`).join('');
   $('app').innerHTML=`
-  <button class="back" onclick="go('home')">→ כל התרגילים</button>
-  <div class="card"><h2>${esc(EX)}</h2>
-    ${c&&c.last!=null?`<div class="big"><b>${fmt(c.last)}</b><span>ק״ג · אחרון${bw(c.last)}</span></div>`:''}
-    ${c&&c.txt?`<div class="res ${c.k}">${c.txt}</div>`:''}
+  <button class="back" onclick="go('home')">→ ליומן</button>
+  <div class="card hd"><h2>${esc(EX)}</h2>
+    ${c&&c.last!=null?`<div class="big"><b>${fmt(c.last)}</b><span>ק״ג${bw(c.last)}</span></div>`:''}
+    ${c&&c.txt?`<div class="res hd2 ${c.k}">${c.txt}</div>`:''}
+    ${chart(h)}
+  </div>
+  <div class="card hd2"><h3>✎ כתיבה ביומן</h3>
     ${first?`
       <label class="l">התוצאה הקודמת שלך (ק״ג)</label>
       <input class="in" id="ePrev" type="number" inputmode="decimal" placeholder="השיא שהיה לך">
       <label class="chk"><input type="checkbox" id="eNo" onchange="$('ePrev').disabled=this.checked;if(this.checked)$('ePrev').value=''"> לא זכור</label>`:''}
-    <label class="l">${first?'התוצאה החדשה שעשית היום (ק״ג)':'תוצאה חדשה (ק״ג)'}</label>
-    <input class="in" id="eNow" type="number" inputmode="decimal" placeholder="כמה הרמת">
-    <button class="btn" onclick="addRes(${first})">שמירה</button>
+    <div class="two">
+      <div><label class="l">${first?'התוצאה החדשה (ק״ג)':'תוצאה חדשה (ק״ג)'}</label><input class="in" id="eNow" type="number" inputmode="decimal" placeholder="כמה הרמת"></div>
+      <div><label class="l">תאריך</label><input class="in" id="eDate" type="date" value="${isoToday()}" max="${isoToday()}"></div>
+    </div>
+    <label class="l">הערה (לא חובה)</label>
+    <input class="in" id="eNote" maxlength="80" placeholder="איך הרגיש? חגורה? טכניקה?">
+    <button class="btn" onclick="addRes(${first})">לכתוב ביומן</button>
   </div>
-  ${h.length?`<div class="card hist"><h3>📈 ההיסטוריה שלי</h3>${rows}</div>`:''}`;
+  ${h.length?`<div class="card hd"><h3>📈 ההיסטוריה ב${esc(EX)}</h3>${rows}</div>`:''}`;
 }
 async function addRes(first){
-  const k=exKey(EX), now=parseFloat($('eNow').value);
-  if(!(now>0)) return toast('לרשום את התוצאה החדשה');
+  const k=exKey(EX), now=parseFloat($('eNow').value), iso=$('eDate').value||isoToday(), note=$('eNote').value.trim();
+  if(!(now>0)) return toast('לכתוב את התוצאה החדשה');
   const h=[...(USER.ex[k]||[])];
   if(first){
     const no=$('eNo').checked, prev=parseFloat($('ePrev').value);
-    if(!no && !(prev>0)) return toast('לרשום תוצאה קודמת, או לסמן "לא זכור"');
-    h.push({v:no?null:prev,d:'לפני'});
+    if(!no && !(prev>0)) return toast('לכתוב תוצאה קודמת, או לסמן "לא זכור"');
+    h.push({v:no?null:prev,iso:null,note:''});
   }
-  h.push({v:now,d:today()});
+  h.push({v:now,iso,note});
+  sortH(h);
   const old=USER.ex[k]; USER.ex[k]=h; USER.t=Date.now();
-  if(await saveUser()){ const c=cmp(h); toast(c.k==='up'?'🔥 שיא חדש! כל הכבוד':'נשמר ✓'); render(); }
+  if(await saveUser()){ const c=cmp(h); toast(c.k==='up'?'🔥 שיא חדש! כל הכבוד':'נכתב ביומן ✓'); render(); }
   else USER.ex[k]=old;
 }
-async function delLast(){
-  const k=exKey(EX), h=[...(USER.ex[k]||[])]; if(!h.length) return;
-  if(!confirm('למחוק את התוצאה האחרונה?')) return;
-  h.pop(); if(h.length===1 && h[0].d==='לפני') h.pop();   // בלי תוצאה חדשה אין טעם בקודמת
+async function delRow(i){
+  const k=exKey(EX), h=[...(USER.ex[k]||[])]; if(!h[i]) return;
+  if(!confirm('למחוק את השורה הזו מהיומן?')) return;
+  h.splice(i,1);
+  if(h.length===1 && !h[0].iso) h.pop();   // נשארה רק "התוצאה מלפני" בלי תוצאה חדשה — מוחקים גם אותה
   const old=USER.ex[k]; USER.ex[k]=h; if(await saveUser()) render(); else USER.ex[k]=old;
 }
 
 // ===== מצב מאמן — צפייה בכולם =====
 function coachLogin(){ const p=prompt('קוד מאמן:'); if(p===null) return; if(p!==CLOUD.pin) return toast('קוד שגוי'); COACH=true; render(); }
 async function coachView(){
-  $('app').innerHTML='<div class="card muted">טוען…</div>';
-  let all; try{ all=await getAll(); }catch(e){ $('app').innerHTML='<div class="card">⚠️ אין חיבור</div>'; return; }
+  $('app').innerHTML='<div class="card hd muted">טוען…</div>';
+  let all; try{ all=await getAll(); }catch(e){ $('app').innerHTML='<div class="card hd">⚠️ אין חיבור</div>'; return; }
   const us=Object.values(all).map(fix).sort((a,b)=>a.name.localeCompare(b.name,'he'));
-  $('app').innerHTML=`<div class="card"><h2>👀 כל המתאמנים (${us.length})</h2><div class="muted">מוצג רק מה שהמתאמנים הזינו בעצמם.</div></div>
-  <div class="ulist">${us.map(u=>{
-    const exs=Object.entries(u.ex).filter(([,h])=>h.length).map(([k,h])=>{const c=cmp(h);const n=(u.exNames||{})[k]||k;
-      const tag=c.k==='up'?'⬆️ +'+fmt(c.last-c.prev):c.k==='down'?'⬇️ '+fmt(c.last-c.prev):c.k==='new'?'🆕':'';
-      return `<div class="exr"><span>${esc(n)}</span><span>${c.last==null?'—':fmt(c.last)+' ק״ג'} <span class="${c.k}">${tag}</span></span></div>`;}).join('');
-    return `<div class="u"><b>${esc(u.name)}</b><div class="muted">${[u.h&&fmt(u.h)+' ס״מ',u.w&&fmt(u.w)+' ק״ג',u.age&&'גיל '+fmt(u.age)].filter(Boolean).join(' · ')||'בלי פרטים'}</div>${exs||'<div class="muted">עוד לא הזין תוצאות</div>'}</div>`;}).join('')}</div>`;
+  $('app').innerHTML=`<div class="card hd"><h2>כל המתאמנים (${us.length})</h2><div class="muted">מה שהמתאמנים כתבו ביומן שלהם.</div></div>
+  ${us.map((u,n)=>{
+    const exs=Object.entries(u.ex).filter(([,h])=>h.length).map(([k,h])=>{const c=cmp(h);
+      const tag=c.k==='up'?'▲ +'+fmt(c.d):c.k==='down'?'▼ '+fmt(c.d):icon(c.k);
+      return `<div class="exr"><span>${esc(exName(u,k))}</span><span>${c.last==null?'—':fmt(c.last)+' ק״ג'} <span class="${c.k}">${tag}</span></span></div>`;}).join('');
+    return `<div class="card u ${n%2?'hd':'hd2'}"><b>${esc(u.name)}</b><div class="muted">${[u.h&&fmt(u.h)+' ס״מ',u.w&&fmt(u.w)+' ק״ג',u.age&&'גיל '+fmt(u.age)].filter(Boolean).join(' · ')||'בלי פרטים'}</div>${exs||'<div class="muted">עוד לא כתב ביומן</div>'}</div>`;}).join('')}`;
 }
 
 // ===== הפעלה =====
