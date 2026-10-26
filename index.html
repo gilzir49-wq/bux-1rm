@@ -123,14 +123,15 @@ const CLOUD = {
   node: "bux-deadlift-1rm/v2",
   pinHash: "091205eb007cb9e49ecc4e1850b891097d6cfe92f82baaa148b797d50eae25b1"   // ← קוד מאמן (שמור מוצפן; לשינוי — לבקש מקלוד)
 };
+// s = שם קצר לקישור ישיר, למשל  https://buxlab.crossfitbux.com/?ex=deadlift
 const EXERCISES = [
-  {n:"דדליפט",t:"kg"},{n:"סקוואט אחורי",t:"kg"},{n:"סקוואט קדמי",t:"kg"},{n:"אוברהד סקוואט",t:"kg"},
-  {n:"לחיצת חזה",t:"kg"},{n:"לחיצת כתפיים",t:"kg"},{n:"פוש פרס",t:"kg"},{n:"ג׳רק",t:"kg"},
-  {n:"קלין",t:"kg"},{n:"פאוור קלין",t:"kg"},{n:"קלין אנד ג׳רק",t:"kg"},{n:"סנאץ׳",t:"kg"},
-  {n:"פאוור סנאץ׳",t:"kg"},{n:"ת׳ראסטר",t:"kg"},
-  {n:"מתח — מקסימום חזרות",t:"reps"},{n:"שכיבות סמיכה — מקסימום",t:"reps"},{n:"דיפס — מקסימום",t:"reps"},
-  {n:"ריצת 400 מ׳",t:"time"},{n:"ריצת 5 ק״מ",t:"time"},{n:"חתירה 500 מ׳",t:"time"},{n:"חתירה 2 ק״מ",t:"time"},
-  {n:"חתירה — מרחק בדקה",t:"dist"}
+  {n:"דדליפט",t:"kg",s:"deadlift"},{n:"סקוואט אחורי",t:"kg",s:"back-squat"},{n:"סקוואט קדמי",t:"kg",s:"front-squat"},{n:"אוברהד סקוואט",t:"kg",s:"overhead-squat"},
+  {n:"לחיצת חזה",t:"kg",s:"bench-press"},{n:"לחיצת כתפיים",t:"kg",s:"strict-press"},{n:"פוש פרס",t:"kg",s:"push-press"},{n:"ג׳רק",t:"kg",s:"jerk"},
+  {n:"קלין",t:"kg",s:"clean"},{n:"פאוור קלין",t:"kg",s:"power-clean"},{n:"קלין אנד ג׳רק",t:"kg",s:"clean-and-jerk"},{n:"סנאץ׳",t:"kg",s:"snatch"},
+  {n:"פאוור סנאץ׳",t:"kg",s:"power-snatch"},{n:"ת׳ראסטר",t:"kg",s:"thruster"},
+  {n:"מתח — מקסימום חזרות",t:"reps",s:"pull-ups"},{n:"שכיבות סמיכה — מקסימום",t:"reps",s:"push-ups"},{n:"דיפס — מקסימום",t:"reps",s:"dips"},
+  {n:"ריצת 400 מ׳",t:"time",s:"run-400m"},{n:"ריצת 5 ק״מ",t:"time",s:"run-5k"},{n:"חתירה 500 מ׳",t:"time",s:"row-500m"},{n:"חתירה 2 ק״מ",t:"time",s:"row-2k"},
+  {n:"חתירה — מרחק בדקה",t:"dist",s:"row-1min"}
 ];
 const PCTS = [50,60,70,75,80,85,90,95];   // מחשבון אחוזים מהשיא
 </script>
@@ -151,6 +152,9 @@ const evBase = CLOUD.url+'/'+CLOUD.node+'/events';
 let ME=null, USER=null, VIEW='home', EX=null, TAB='mine';
 let COACH=false, AS_COACH=false;     // AS_COACH = המאמן פתח יומן של מתאמן
 let EVENTS={}, BOARD_EX='דדליפט', BOARD_G='', EV=null;
+// קישור ישיר לתרגיל (?ex=deadlift) — נפתח מיד, או אחרי הכניסה
+let PENDING=null;
+try{ const q=new URLSearchParams(location.search).get('ex'); if(q){ const e=EXERCISES.find(x=>x.s===q.trim().toLowerCase()||x.n===q.trim()); if(e) PENDING=e.n; history.replaceState(null,'',location.pathname); } }catch(e){}
 try{ ME=localStorage.getItem('pr_me'); COACH=sessionStorage.getItem('pr_coach')==='1'; }catch(e){}
 
 const $ = id => document.getElementById(id);
@@ -255,6 +259,7 @@ function render(){
   $('hBtn').textContent = COACH?'יציאה ממצב מאמן':'יציאה';
   if(COACH && !AS_COACH){ return VIEW==='event'?eventView():coachView(); }
   if(!USER) return loginView();
+  if(PENDING && VIEW!=='profile'){ EX=PENDING; VIEW='ex'; PENDING=null; scrollTo(0,0); }
   if(VIEW==='profile') return profileView();
   if(VIEW==='ex') return exView();
   homeView();
@@ -272,6 +277,7 @@ function loginView(){
     <input class="in" id="lCode" type="tel" inputmode="numeric" maxlength="4" placeholder="פעם ראשונה? בחר קוד שתזכור">
     <div class="muted" style="margin-top:8px">הקוד שומר שרק אתה תוכל לכתוב ביומן שלך. שכחת? המאמן יכול לאפס.</div>
     <button class="btn" onclick="login()">כניסה ליומן</button>
+    ${PENDING?`<div class="muted" style="margin-top:8px;text-align:center">אחרי הכניסה נפתח לך ישר: <b>${esc(PENDING)}</b></div>`:''}
   </div>`;
 }
 async function login(){
