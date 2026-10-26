@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d1410">
-<title>יום שיאים · דדליפט</title>
+<title>השיאים שלי · באקס</title>
 <style>
 :root{
   --bg:#0d1410; --card:#16211a; --card2:#1d2b22; --line:#2a3b30;
@@ -12,315 +12,274 @@
   --gold:#F1C93B; --red:#e0574f; --blue:#58a6ff;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Arial,sans-serif;font-size:16px;padding-bottom:90px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Arial,sans-serif;font-size:16px;padding-bottom:40px}
 button{font:inherit;color:var(--text);cursor:pointer;border:0}
-input{font:inherit;color:var(--text)}
-header{background:linear-gradient(135deg,var(--green),#123a16);padding:18px 16px 16px;border-bottom:3px solid var(--gold)}
-header h1{margin:0;font-size:24px}
+input,select{font:inherit;color:var(--text)}
+header{background:linear-gradient(135deg,var(--green),#123a16);padding:18px 16px 16px;border-bottom:3px solid var(--gold);display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h1{margin:0;font-size:22px}
 header h1 span{color:var(--gold)}
-header .sub{color:#d6e6d8;font-size:14px;margin-top:4px}
-.wrap{max-width:720px;margin:0 auto;padding:14px 14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
-.stat b{display:block;font-size:24px;color:var(--gold)}
-.stat small{color:var(--mute);font-size:12px}
-.tabs{display:flex;gap:6px;margin:6px 0 12px}
-.tabs button{flex:1;padding:10px;border-radius:12px;background:var(--card);border:1px solid var(--line);color:var(--mute);font-weight:600}
-.tabs button.on{background:var(--gold);color:#1a1a1a;border-color:var(--gold)}
-.add{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
-.add h3{margin:0 0 10px;font-size:17px}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.in{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+header .sub{color:#d6e6d8;font-size:13px;margin-top:3px}
+.hbtn{background:rgba(0,0,0,.25);color:#fff;padding:8px 12px;border-radius:10px;font-size:14px;white-space:nowrap}
+.wrap{max-width:640px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.card h2{margin:0 0 12px;font-size:19px}
+.card h3{margin:0 0 10px;font-size:17px}
+label.l{display:block;color:var(--mute);font-size:14px;margin:10px 0 5px}
+.in{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0;font-size:17px}
 .in:focus{outline:2px solid var(--gold);border-color:transparent}
-.grow{flex:1}
-.kg{width:110px;text-align:center}
-.chk{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:15px;padding:6px 2px}
-.chk input{width:20px;height:20px;accent-color:var(--gold)}
-.btn{background:var(--green2);color:#fff;padding:12px 16px;border-radius:12px;font-weight:700}
-.btn.gold{background:var(--gold);color:#1a1a1a}
-.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
-.search{width:100%;margin-bottom:10px}
-.ath{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
-.ath.pr{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 6px 24px rgba(241,201,59,.12)}
-.ath.first{border-color:var(--blue)}
-.top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.name{font-size:19px;font-weight:800}
-.prev{color:var(--mute);font-size:14px;margin-top:2px}
-.badge{padding:5px 10px;border-radius:99px;font-size:13px;font-weight:700;white-space:nowrap}
-.b-pr{background:var(--gold);color:#1a1a1a}
-.b-first{background:var(--blue);color:#06213f}
-.b-eq{background:#3a4a3f;color:var(--text)}
-.b-wait{background:var(--card2);color:var(--mute)}
-.best{display:flex;align-items:baseline;gap:8px;margin:10px 0 4px}
-.best b{font-size:34px}
-.best .delta{color:var(--gold);font-weight:800}
-.pcts{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
-.pct{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:5px 8px;font-size:13px;color:var(--mute)}
-.pct b{color:var(--text)}
-.atts{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
-.att{padding:6px 10px;border-radius:10px;font-weight:700;font-size:14px;color:var(--text)}
-.att.ok{background:#1f4d26;border:1px solid var(--green2)}
-.att.no{background:#4a1f1d;border:1px solid var(--red);text-decoration:line-through}
-.try{display:flex;gap:6px;align-items:center;margin-top:8px}
-.step{width:44px;height:46px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:20px;font-weight:700;color:var(--text)}
-.try .in{width:90px;text-align:center;font-size:18px;font-weight:700;padding:10px 4px}
-.okb{background:var(--green2);color:#fff;padding:12px 14px;border-radius:12px;font-weight:800}
-.nob{background:var(--red);color:#fff;padding:12px 14px;border-radius:12px;font-weight:800}
-.mini{display:flex;gap:12px;margin-top:10px}
-.mini button{background:none;color:var(--mute);font-size:13px;text-decoration:underline;padding:4px 0}
-.board .li{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
-.board .rk{width:30px;height:30px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:800;color:var(--gold);flex:none}
-.board .nm{flex:1;font-weight:700}
-.board .nm small{display:block;color:var(--mute);font-weight:400;font-size:13px}
-.board .vl{text-align:left;font-weight:800;font-size:18px}
-.board .vl small{display:block;color:var(--gold);font-size:13px}
-.empty{color:var(--mute);text-align:center;padding:30px 10px}
-.lock{position:fixed;bottom:0;left:0;right:0;background:#0a100c;border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;align-items:center;z-index:5}
-.lock .st{color:var(--mute);font-size:13px}
-.ro .coach{display:none}
-select.in{width:100%;font-size:17px;font-weight:700;appearance:auto}
-.ath.mine{border-color:var(--green2);box-shadow:0 0 0 2px var(--green2)}
-.mineTag{color:var(--green2);font-size:13px;font-weight:800;margin-bottom:4px}
-.me{background:none;color:var(--gold);font-size:13px;text-decoration:underline;padding:4px 0}
-.hint{color:var(--mute);font-size:13px;margin-top:8px}
+.in:disabled{opacity:.4}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:block;width:100%;background:var(--gold);color:#1a1a1a;padding:14px;border-radius:12px;font-weight:800;font-size:17px;margin-top:14px}
+.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line);font-weight:700}
+.chk{display:flex;align-items:center;gap:8px;color:var(--text);font-size:16px;margin-top:10px}
+.chk input{width:22px;height:22px;accent-color:var(--gold)}
+.muted{color:var(--mute);font-size:14px}
+.prof{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chip{background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:5px 11px;font-size:14px;color:var(--text)}
+.exgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ex{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:right;color:var(--text);min-height:74px}
+.ex b{display:block;font-size:16px}
+.ex small{display:block;color:var(--mute);font-size:13px;margin-top:4px}
+.ex.has{border-color:var(--green2)}
+.up{color:#5fd068;font-weight:800}
+.down{color:var(--red);font-weight:800}
+.eq{color:var(--mute);font-weight:800}
+.new{color:var(--blue);font-weight:800}
+.big{display:flex;align-items:baseline;gap:10px;margin:6px 0}
+.big b{font-size:42px}
+.res{border-radius:14px;padding:14px;text-align:center;font-size:20px;font-weight:800;margin:10px 0}
+.res.up{background:rgba(47,138,55,.2);border:1px solid var(--green2)}
+.res.down{background:rgba(224,87,79,.15);border:1px solid var(--red)}
+.res.eq{background:var(--card2);border:1px solid var(--line);color:var(--text)}
+.res.new{background:rgba(88,166,255,.12);border:1px solid var(--blue)}
+.hist .r{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.hist .r:last-child{border:0}
+.del{background:none;color:var(--mute);font-size:13px;text-decoration:underline;padding:2px 6px}
+.back{background:none;color:var(--gold);font-weight:700;padding:4px 0;margin-bottom:8px}
+.ulist .u{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.ulist .u b{font-size:17px}
+.ulist .exr{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;color:var(--text)}
 .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a1a1a;padding:10px 16px;border-radius:12px;font-weight:800;z-index:9;display:none;max-width:90vw;text-align:center}
-@media(max-width:420px){.stat b{font-size:20px}.name{font-size:17px}}
+.foot{text-align:center;margin-top:20px}
+.foot button{background:none;color:var(--mute);font-size:13px;text-decoration:underline}
 </style>
 </head>
 <body>
 
 <!-- ============================================================
-     ✏️ לעריכה רק כאן: קוד העריכה ומקום השמירה
+     ✏️ לעריכה רק כאן: קוד מאמן, רשימת תרגילים, מקום שמירה
      ============================================================ -->
 <script id="DATA">
 const CLOUD = {
   url: "https://command-center-gal-default-rtdb.europe-west1.firebasedatabase.app",
-  node: "bux-deadlift-1rm",
-  pin: "1234"           // ← קוד העריכה של המאמנים
+  node: "bux-deadlift-1rm/v2",
+  pin: "1234"            // ← קוד מאמן (לצפייה בכל המתאמנים)
 };
-const TITLE = "יום שיאים · דדליפט 1RM";
-const STEP = 2.5;        // קפיצת משקל בכפתורי + / −
-const PCTS = [60,70,80,90,95,100,102.5,105]; // אחוזים לחימום / ניסיונות
+const EXERCISES = [
+  "דדליפט","סקוואט אחורי","סקוואט קדמי","אוברהד סקוואט",
+  "לחיצת חזה","לחיצת כתפיים","פוש פרס","ג׳רק",
+  "קלין","פאוור קלין","קלין אנד ג׳רק","סנאץ׳","פאוור סנאץ׳","ת׳ראסטר"
+];
 </script>
 
 <header>
-  <h1>🏋️ יום שיאים · <span>דדליפט</span></h1>
-  <div class="sub" id="sub"></div>
+  <div><h1>🏋️ השיאים <span>שלי</span></h1><div class="sub">קרוספיט באקס</div></div>
+  <button class="hbtn" id="hBtn" onclick="logout()" style="display:none">יציאה</button>
 </header>
 
-<div class="wrap" id="app">
-  <div class="stats">
-    <div class="stat"><b id="sAll">0</b><small>מתאמנים</small></div>
-    <div class="stat"><b id="sPR">0</b><small>שברו שיא</small></div>
-    <div class="stat"><b id="sFirst">0</b><small>שיא ראשון</small></div>
-    <div class="stat"><b id="sKg">0</b><small>ק״ג שנוספו</small></div>
-  </div>
-
-  <div class="tabs">
-    <button id="tLog" class="on" onclick="setTab('log')">📝 רישום</button>
-    <button id="tBoard" onclick="setTab('board')">🏆 לוח שיאים</button>
-  </div>
-
-  <div id="viewLog">
-    <div class="add">
-      <h3>👋 מי אתה?</h3>
-      <select class="in" id="meSel" onchange="pickMe(this.value)"></select>
-      <div class="hint">בוחרים את השם → מעדכנים שיא קודם אם צריך → רושמים כל ניסיון ב"עבר" או ✗</div>
-    </div>
-    <div class="add">
-      <h3>➕ לא מופיע ברשימה? הוסף את עצמך</h3>
-      <div class="row">
-        <input class="in grow" id="nName" placeholder="השם שלך">
-        <input class="in kg" id="nPrev" type="number" inputmode="decimal" placeholder="שיא קודם">
-      </div>
-      <div class="row" style="justify-content:space-between;margin-top:8px">
-        <label class="chk"><input type="checkbox" id="nNo" onchange="noMem()"> לא זוכר את השיא</label>
-        <button class="btn gold" onclick="addAth()">הוסף</button>
-      </div>
-    </div>
-    <input class="in search" id="q" placeholder="🔍 חיפוש מתאמן" oninput="render()">
-    <div id="list"></div>
-  </div>
-
-  <div id="viewBoard" class="board" style="display:none">
-    <div class="row" style="margin-bottom:10px"><button class="btn ghost grow" onclick="shareWA()">📲 שיתוף התוצאות בוואטסאפ</button></div>
-    <div id="boardList"></div>
-  </div>
-</div>
-
-<div class="lock">
-  <span class="st" id="syncSt">מתחבר…</span>
-  <button class="btn ghost" id="lockBtn" onclick="toggleEdit()">🔒 כניסת מאמן</button>
-</div>
+<div class="wrap" id="app"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 // ===== מצב =====
-let ATH = {};              // id → {name, prev(null=לא זוכר), atts:[{w,ok}], t}
-let EDIT = false, TAB = 'log', ME = '';   // EDIT = מצב מאמן, ME = המתאמן שמחזיק את הטלפון
-try{ EDIT = localStorage.getItem('dl_edit')==='1'; TAB = localStorage.getItem('dl_tab')||'log'; ME = localStorage.getItem('dl_me')||''; }catch(e){}
-function pickMe(id){ ME=id; try{localStorage.setItem('dl_me',id)}catch(e){} document.getElementById('q').value=''; render(); if(id) scrollTo({top:document.getElementById('list').offsetTop-10,behavior:'smooth'}); }
-const drafts = {};         // משקל לניסיון הבא לכל מתאמן (לא נשמר בענן)
+const base = CLOUD.url+'/'+CLOUD.node+'/users';
+let ME=null, USER=null, VIEW='home', EX=null, COACH=false;
+try{ ME=localStorage.getItem('pr_me'); }catch(e){}
 
-document.getElementById('sub').textContent = new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'}) + ' · קרוספיט באקס';
-
+const $ = id => document.getElementById(id);
 const fmt = n => (Math.round(n*10)/10).toString();
-const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2600);}
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => new Date().toLocaleDateString('he-IL',{day:'numeric',month:'numeric',year:'2-digit'});
+const norm = s => s.trim().replace(/\s+/g,' ');
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',2600);}
 
-// ===== חישובים =====
-function best(a){ const ok=(a.atts||[]).filter(x=>x.ok).map(x=>x.w); return ok.length?Math.max(...ok):null; }
-function status(a){
-  const b=best(a);
-  if(b==null) return {k:'wait',txt:'עוד לא הרים',cls:'b-wait'};
-  if(a.prev==null) return {k:'first',txt:'🆕 שיא חדש נקבע',cls:'b-first'};
-  if(b>a.prev) return {k:'pr',txt:'🔥 שבר שיא! +'+fmt(b-a.prev),cls:'b-pr'};
-  if(b===a.prev) return {k:'eq',txt:'השווה שיא',cls:'b-eq'};
-  return {k:'below',txt:'עוד לא שבר',cls:'b-wait'};
+// ===== ענן — כל מתאמן שמור בנפרד =====
+async function getAll(){ const r=await fetch(base+'.json'); if(!r.ok) throw 0; return (await r.json())||{}; }
+async function getUser(id){ const r=await fetch(base+'/'+id+'.json'); if(!r.ok) throw 0; return fix(await r.json()); }
+async function saveUser(){
+  try{ const r=await fetch(base+'/'+ME+'.json',{method:'PUT',body:JSON.stringify(USER)}); if(!r.ok)throw 0; return true; }
+  catch(e){ toast('⚠️ לא נשמר — בדוק אינטרנט ונסה שוב'); return false; }
 }
-function nextW(id){
-  if(drafts[id]!=null) return drafts[id];
-  const a=ATH[id], b=best(a);
-  if(b!=null) return b+STEP;
-  if(a.prev!=null) return Math.round(a.prev*0.8/STEP)*STEP;
-  return 60;
-}
+function fix(u){ if(!u) return null; u.ex=u.ex||{}; for(const k in u.ex){ const h=u.ex[k]; u.ex[k]=(Array.isArray(h)?h:Object.values(h||{})).map(r=>({v:r.v??null,d:r.d})); } return u; }
+const exKey = name => name.replace(/[.#$\[\]\/]/g,'_');
 
-// ===== תצוגה =====
-function setTab(t){TAB=t;try{localStorage.setItem('dl_tab',t)}catch(e){}render();}
+// ===== השוואת תוצאות =====
+// היסטוריה של תרגיל: [{v: מספר או null (=לא זכור), d: תאריך}]
+function cmp(h){
+  if(!h||!h.length) return null;
+  const last=h[h.length-1]; if(h.length<2) return {k:'eq',last:last.v,txt:''};
+  const prev=h[h.length-2];
+  if(prev.v==null) return {k:'new',last:last.v,txt:'🆕 שיא ראשון נקבע'};
+  const d=last.v-prev.v, p=prev.v?Math.round(d/prev.v*1000)/10:0;
+  if(d>0) return {k:'up',last:last.v,prev:prev.v,txt:`⬆️ עלייה של ${fmt(d)} ק״ג (+${p}%)`};
+  if(d<0) return {k:'down',last:last.v,prev:prev.v,txt:`⬇️ ירידה של ${fmt(-d)} ק״ג (${p}%)`};
+  return {k:'eq',last:last.v,prev:prev.v,txt:'⏸️ ללא שינוי'};
+}
+const bw = v => USER&&USER.w&&v ? ` · פי ${fmt(v/USER.w)} ממשקל הגוף` : '';
+
+// ===== מסכים =====
 function render(){
-  document.getElementById('app').classList.toggle('ro',!EDIT);
-  document.getElementById('lockBtn').textContent = EDIT?'🔓 מצב מאמן פעיל — יציאה':'🔒 מאמן';
-  const names=Object.entries(ATH).sort((x,y)=>x[1].name.localeCompare(y[1].name,'he'));
-  if(ME && !ATH[ME]) ME='';
-  document.getElementById('meSel').innerHTML='<option value="">— בחר את השם שלך —</option>'+names.map(([id,a])=>`<option value="${id}"${id===ME?' selected':''}>${esc(a.name)}</option>`).join('');
-  document.getElementById('tLog').classList.toggle('on',TAB==='log');
-  document.getElementById('tBoard').classList.toggle('on',TAB==='board');
-  document.getElementById('viewLog').style.display = TAB==='log'?'':'none';
-  document.getElementById('viewBoard').style.display = TAB==='board'?'':'none';
-
-  const all=Object.entries(ATH);
-  let pr=0,first=0,kg=0;
-  all.forEach(([,a])=>{const s=status(a); if(s.k==='pr'){pr++;kg+=best(a)-a.prev;} if(s.k==='first')first++;});
-  sAll.textContent=all.length; sPR.textContent=pr; sFirst.textContent=first; sKg.textContent=fmt(kg);
-
-  // רשימת רישום
-  const q=document.getElementById('q').value.trim();
-  const items=all.filter(([,a])=>!q||a.name.includes(q)).sort((x,y)=>(y[0]===ME)-(x[0]===ME)||(y[1].t||0)-(x[1].t||0));
-  document.getElementById('list').innerHTML = items.length? items.map(([id,a])=>{
-    const s=status(a), b=best(a);
-    const pcts = a.prev!=null ? `<div class="pcts">${PCTS.map(p=>`<span class="pct">${p}% <b>${fmt(Math.round(a.prev*p/100/STEP)*STEP)}</b></span>`).join('')}</div>` : '';
-    const atts=(a.atts||[]).map((x,i)=>`<span class="att ${x.ok?'ok':'no'}">${fmt(x.w)}</span>`).join('');
-    const can = EDIT || id===ME;
-    return `<div class="ath ${id===ME?'mine':s.k==='pr'?'pr':s.k==='first'?'first':''}">
-      ${id===ME?'<div class="mineTag">⭐ הכרטיס שלי</div>':''}
-      <div class="top"><div><div class="name">${esc(a.name)}</div>
-        <div class="prev">שיא קודם: ${a.prev!=null?'<b>'+fmt(a.prev)+' ק״ג</b>':'לא זוכר'}</div></div>
-        <span class="badge ${s.cls}">${s.txt}</span></div>
-      <div class="best"><b>${b!=null?fmt(b):'—'}</b><span>ק״ג היום</span>${s.k==='pr'?`<span class="delta">+${fmt(b-a.prev)}</span>`:''}</div>
-      ${can?pcts:''}
-      ${atts?`<div class="atts">${atts}</div>`:''}
-      ${can?`<div class="try">
-        <button class="step" onclick="bump('${id}',-1)">−</button>
-        <input class="in" type="number" inputmode="decimal" value="${fmt(nextW(id))}" onchange="drafts['${id}']=parseFloat(this.value)||0">
-        <button class="step" onclick="bump('${id}',1)">+</button>
-        <button class="okb" onclick="lift('${id}',true)">✓ עבר</button>
-        <button class="nob" onclick="lift('${id}',false)">✗</button>
-      </div>
-      <div class="mini">
-        <button onclick="undo('${id}')">↶ ביטול ניסיון אחרון</button>
-        <button onclick="editPrev('${id}')">✏️ עריכת שם / שיא</button>
-        <button class="coach" onclick="delAth('${id}')">🗑️ הסרה</button>
-      </div>`:`<button class="me" onclick="pickMe('${id}')">זה אני →</button>`}</div>`;
-  }).join('') : `<div class="empty">${all.length?'לא נמצא':'עוד אין מתאמנים. מוסיפים למעלה 👆'}</div>`;
-
-  // לוח שיאים: קודם מי ששבר (לפי תוספת), אחריו שיא ראשון, אחריו השאר
-  const order={pr:0,first:1,eq:2,below:3,wait:4};
-  const rows=all.map(([id,a])=>({a,s:status(a),b:best(a)})).sort((x,y)=>
-    order[x.s.k]-order[y.s.k] || (x.s.k==='pr'?(y.b-y.a.prev)-(x.b-x.a.prev):(y.b||0)-(x.b||0)));
-  document.getElementById('boardList').innerHTML = rows.length? rows.map((r,i)=>`
-    <div class="li"><div class="rk">${r.s.k==='pr'?'🔥':r.s.k==='first'?'🆕':i+1}</div>
-      <div class="nm">${esc(r.a.name)}<small>${r.a.prev!=null?'קודם '+fmt(r.a.prev):'לא זכר'} · ${r.s.txt}</small></div>
-      <div class="vl">${r.b!=null?fmt(r.b):'—'}${r.s.k==='pr'?`<small>+${fmt(r.b-r.a.prev)} ק״ג</small>`:''}</div></div>`).join('')
-    : '<div class="empty">עוד אין תוצאות</div>';
+  $('hBtn').style.display = (USER||COACH)?'':'none';
+  $('hBtn').textContent = COACH?'יציאה ממצב מאמן':'יציאה';
+  if(COACH) return coachView();
+  if(!USER) return loginView();
+  if(VIEW==='profile') return profileView();
+  if(VIEW==='ex') return exView();
+  homeView();
 }
 
-// ===== פעולות =====
-function need(id){ if(EDIT || (id && id===ME)) return true; toast(id?'אפשר לעדכן רק את הכרטיס שלך':'צריך כניסת מאמן 🔒'); return false; }
-function noMem(){ const n=document.getElementById('nNo').checked; const p=document.getElementById('nPrev'); p.disabled=n; if(n)p.value=''; }
-function addAth(){
-  const name=nName.value.trim(); if(!name){toast('חסר שם');return;}
-  const no=nNo.checked, prev=parseFloat(nPrev.value);
-  if(!no && !(prev>0)){toast('לרשום שיא קודם, או לסמן "לא זוכר"');return;}
-  if(Object.values(ATH).some(a=>a.name===name)){toast('המתאמן כבר ברשימה');return;}
-  const id='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-  ATH[id]={name,prev:no?null:prev,atts:[],t:Date.now()};
-  nName.value='';nPrev.value='';nNo.checked=false;noMem();
-  ME=id; try{localStorage.setItem('dl_me',id)}catch(e){}
-  save(id); render(); toast('נוספת! זה הכרטיס שלך ⭐');
+function loginView(){
+  $('app').innerHTML=`
+  <div class="card"><h2>👋 כניסת מתאמן</h2>
+    <label class="l">שם מלא</label>
+    <input class="in" id="lName" placeholder="לדוגמה: שני כהן" autocomplete="name">
+    <label class="l">קוד אישי (4 ספרות)</label>
+    <input class="in" id="lCode" type="tel" inputmode="numeric" maxlength="4" placeholder="נכנס ראשונה? בחר קוד שתזכור">
+    <div class="muted" style="margin-top:8px">הקוד שומר שרק אתה תוכל לעדכן את התוצאות שלך.</div>
+    <button class="btn" onclick="login()">כניסה</button>
+  </div>`;
 }
-function bump(id,d){ drafts[id]=Math.max(0,nextW(id)+d*STEP); render(); }
-function lift(id,ok){
-  if(!need(id))return;
-  const a=ATH[id], w=nextW(id); if(!(w>0))return;
-  const before = best(a)||0;
-  a.atts=(a.atts||[]).concat([{w,ok}]); a.t=Date.now();
-  delete drafts[id];
-  if(ok){
-    if(a.prev!=null && w>a.prev && w>before) toast('🔥 '+a.name+' שבר שיא! '+fmt(w)+' ק״ג (+'+fmt(w-a.prev)+')');
-    else if(a.prev==null) toast('🆕 '+a.name+': '+fmt(w)+' ק״ג נרשם');
-  } else drafts[id]=w;   // נכשל → נשאר על אותו משקל לניסיון הבא
-  save(id); render();
-}
-function undo(id){ if(!need(id))return; const a=ATH[id]; if(!a.atts||!a.atts.length)return; a.atts=a.atts.slice(0,-1); delete drafts[id]; save(id); render(); }
-function editPrev(id){
-  if(!need(id))return; const a=ATH[id];
-  const n=prompt('שם:',a.name); if(n===null)return;
-  const p=prompt('שיא קודם בק״ג (ריק = לא זוכר):',a.prev??''); if(p===null)return;
-  a.name=n.trim()||a.name; a.prev=parseFloat(p)>0?parseFloat(p):null; save(id); render();
-}
-function delAth(id){
-  if(!need())return;
-  if(!confirm('להסיר את '+ATH[id].name+' וכל הניסיונות שלו?'))return;
-  delete ATH[id]; remove(id); render();
-}
-function toggleEdit(){
-  if(EDIT){EDIT=false;}
-  else{ const p=prompt('קוד מאמן:'); if(p!==CLOUD.pin){ if(p!==null)toast('קוד שגוי');return;} EDIT=true; }
-  try{localStorage.setItem('dl_edit',EDIT?'1':'0')}catch(e){}
+async function login(){
+  const name=norm($('lName').value), code=$('lCode').value.trim();
+  if(name.length<2) return toast('חסר שם');
+  if(!/^\d{4}$/.test(code)) return toast('קוד של 4 ספרות');
+  let all; try{ all=await getAll(); }catch(e){ return toast('⚠️ אין חיבור לאינטרנט'); }
+  const hit=Object.entries(all).find(([,u])=>norm(u.name)===name);
+  if(hit){
+    if(hit[1].code!==code) return toast('הקוד לא נכון לשם הזה');
+    ME=hit[0]; USER=fix(hit[1]);
+  } else {
+    ME='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    USER={name,code,ex:{},t:Date.now()};
+    if(!await saveUser()) return;
+    VIEW='profile';
+  }
+  try{ localStorage.setItem('pr_me',ME); }catch(e){}
   render();
 }
-function shareWA(){
-  const rows=Object.values(ATH).map(a=>({a,s:status(a),b:best(a)}));
-  const prs=rows.filter(r=>r.s.k==='pr').sort((x,y)=>(y.b-y.a.prev)-(x.b-x.a.prev));
-  const fs=rows.filter(r=>r.s.k==='first');
-  let t='🏋️ *יום שיאים דדליפט — קרוספיט באקס*\n\n';
-  if(prs.length) t+='🔥 *שברו שיא:*\n'+prs.map(r=>`• ${r.a.name}: ${fmt(r.b)} ק״ג (+${fmt(r.b-r.a.prev)})`).join('\n')+'\n\n';
-  if(fs.length) t+='🆕 *שיא חדש נקבע:*\n'+fs.map(r=>`• ${r.a.name}: ${fmt(r.b)} ק״ג`).join('\n')+'\n\n';
-  t+='כל הכבוד לכולם 💪💛💚';
-  location.href='https://wa.me/?text='+encodeURIComponent(t);
+function logout(){ ME=null;USER=null;COACH=false;VIEW='home';try{localStorage.removeItem('pr_me')}catch(e){} render(); }
+
+function profileView(){
+  const u=USER;
+  $('app').innerHTML=`
+  <button class="back" onclick="go('home')">→ ${u.h||u.w||u.age?'חזרה':'דלג, אמלא אחר כך'}</button>
+  <div class="card"><h2>📋 הפרטים שלי</h2>
+    <div class="muted">לא חובה, אבל עוזר להשוות התקדמות (למשל כמה אתה מרים ביחס למשקל הגוף).</div>
+    <div class="three" style="margin-top:6px">
+      <div><label class="l">גובה (ס״מ)</label><input class="in" id="pH" type="number" inputmode="numeric" value="${u.h||''}"></div>
+      <div><label class="l">משקל (ק״ג)</label><input class="in" id="pW" type="number" inputmode="decimal" value="${u.w||''}"></div>
+      <div><label class="l">גיל</label><input class="in" id="pA" type="number" inputmode="numeric" value="${u.age||''}"></div>
+    </div>
+    <button class="btn" onclick="saveProfile()">שמירה</button>
+  </div>`;
+}
+async function saveProfile(){
+  const num=id=>{const v=parseFloat($(id).value);return v>0?v:null;};
+  USER.h=num('pH'); USER.w=num('pW'); USER.age=num('pA');
+  if(await saveUser()){ toast('נשמר ✓'); go('home'); }
+}
+function go(v,ex){ VIEW=v; if(ex!==undefined)EX=ex; render(); scrollTo(0,0); }
+function openEx(i){ go('ex', allEx()[i]); }
+function allEx(){ return [...EXERCISES, ...Object.values(USER.exNames||{}).filter(n=>!EXERCISES.includes(n))]; }
+
+function homeView(){
+  const u=USER;
+  const tiles=allEx().map((n,i)=>{
+    const h=u.ex[exKey(n)], c=cmp(h);
+    const ic={up:'⬆️',down:'⬇️',new:'🆕'}[c&&c.k]||'';
+    const sub = !c ? 'עוד לא הוזן' : c.last==null ? 'לא זכור' : `${fmt(c.last)} ק״ג ${ic?`<span class="${c.k}">${ic}</span>`:''}`;
+    return `<button class="ex ${c?'has':''}" onclick="openEx(${i})"><b>${esc(n)}</b><small>${sub}</small></button>`;
+  }).join('');
+  $('app').innerHTML=`
+  <div class="card"><h2>היי ${esc(u.name)} 💪</h2>
+    <div class="prof">
+      ${u.h?`<span class="chip">📏 ${fmt(u.h)} ס״מ</span>`:''}${u.w?`<span class="chip">⚖️ ${fmt(u.w)} ק״ג</span>`:''}${u.age?`<span class="chip">🎂 גיל ${fmt(u.age)}</span>`:''}
+      <button class="chip" onclick="go('profile')">✏️ ${u.h||u.w||u.age?'עדכון פרטים':'הוספת גובה, משקל וגיל'}</button>
+    </div>
+  </div>
+  <div class="card"><h3>בחר תרגיל להזנת תוצאה</h3>
+    <div class="exgrid">${tiles}</div>
+    <label class="l">תרגיל אחר</label>
+    <div class="two"><input class="in" id="newEx" placeholder="שם התרגיל"><button class="btn ghost" style="margin:0" onclick="addEx()">➕ הוסף</button></div>
+  </div>`;
+}
+async function addEx(){
+  const n=norm($('newEx').value); if(n.length<2) return toast('חסר שם תרגיל');
+  USER.exNames=USER.exNames||{}; USER.exNames[exKey(n)]=n;
+  if(await saveUser()) go('ex',n);
 }
 
-// ===== סנכרון לענן (כל מתאמן נשמר בנפרד, כך ששני מאמנים לא דורסים זה את זה) =====
-const base=CLOUD.url+'/'+CLOUD.node+'/athletes';
-function setSt(t){document.getElementById('syncSt').textContent=t;}
-async function save(id){
-  try{ const r=await fetch(base+'/'+id+'.json',{method:'PUT',body:JSON.stringify(ATH[id])}); if(!r.ok)throw 0; setSt('✓ נשמר '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})); }
-  catch(e){ setSt('⚠️ לא נשמר — בודק חיבור'); toast('לא נשמר! בדוק אינטרנט ונסה שוב'); }
+function exView(){
+  const k=exKey(EX), h=USER.ex[k]||[], c=cmp(h);
+  const first=!h.length;
+  const rows=h.map((r,i)=>({...r,i})).reverse().map(r=>`<div class="r"><span>${esc(r.d)}</span><span><b>${r.v==null?'לא זכור':fmt(r.v)+' ק״ג'}</b>${r.i===h.length-1?` <button class="del" onclick="delLast()">מחיקה</button>`:''}</span></div>`).join('');
+  $('app').innerHTML=`
+  <button class="back" onclick="go('home')">→ כל התרגילים</button>
+  <div class="card"><h2>${esc(EX)}</h2>
+    ${c&&c.last!=null?`<div class="big"><b>${fmt(c.last)}</b><span>ק״ג · אחרון${bw(c.last)}</span></div>`:''}
+    ${c&&c.txt?`<div class="res ${c.k}">${c.txt}</div>`:''}
+    ${first?`
+      <label class="l">התוצאה הקודמת שלך (ק״ג)</label>
+      <input class="in" id="ePrev" type="number" inputmode="decimal" placeholder="השיא שהיה לך">
+      <label class="chk"><input type="checkbox" id="eNo" onchange="$('ePrev').disabled=this.checked;if(this.checked)$('ePrev').value=''"> לא זכור</label>`:''}
+    <label class="l">${first?'התוצאה החדשה שעשית היום (ק״ג)':'תוצאה חדשה (ק״ג)'}</label>
+    <input class="in" id="eNow" type="number" inputmode="decimal" placeholder="כמה הרמת">
+    <button class="btn" onclick="addRes(${first})">שמירה</button>
+  </div>
+  ${h.length?`<div class="card hist"><h3>📈 ההיסטוריה שלי</h3>${rows}</div>`:''}`;
 }
-async function remove(id){ try{ await fetch(base+'/'+id+'.json',{method:'DELETE'}); }catch(e){} }
-async function pull(){
-  try{
-    const r=await fetch(base+'.json'); if(!r.ok)throw 0;
-    const d=(await r.json())||{};
-    Object.values(d).forEach(a=>{ if(!Array.isArray(a.atts)) a.atts=a.atts?Object.values(a.atts):[]; if(a.prev===undefined)a.prev=null; });
-    const changed=JSON.stringify(d)!==JSON.stringify(ATH);
-    ATH=d; setSt('🟢 מחובר · מתעדכן חי');
-    const ae=document.activeElement; const typing = ae && ae.tagName==='INPUT';
-    if(changed && !typing) render();
-  }catch(e){ setSt('⚠️ אין חיבור'); }
+async function addRes(first){
+  const k=exKey(EX), now=parseFloat($('eNow').value);
+  if(!(now>0)) return toast('לרשום את התוצאה החדשה');
+  const h=[...(USER.ex[k]||[])];
+  if(first){
+    const no=$('eNo').checked, prev=parseFloat($('ePrev').value);
+    if(!no && !(prev>0)) return toast('לרשום תוצאה קודמת, או לסמן "לא זכור"');
+    h.push({v:no?null:prev,d:'לפני'});
+  }
+  h.push({v:now,d:today()});
+  const old=USER.ex[k]; USER.ex[k]=h; USER.t=Date.now();
+  if(await saveUser()){ const c=cmp(h); toast(c.k==='up'?'🔥 שיא חדש! כל הכבוד':'נשמר ✓'); render(); }
+  else USER.ex[k]=old;
 }
-render(); pull(); setInterval(pull,5000);
+async function delLast(){
+  const k=exKey(EX), h=[...(USER.ex[k]||[])]; if(!h.length) return;
+  if(!confirm('למחוק את התוצאה האחרונה?')) return;
+  h.pop(); if(h.length===1 && h[0].d==='לפני') h.pop();   // בלי תוצאה חדשה אין טעם בקודמת
+  const old=USER.ex[k]; USER.ex[k]=h; if(await saveUser()) render(); else USER.ex[k]=old;
+}
+
+// ===== מצב מאמן — צפייה בכולם =====
+function coachLogin(){ const p=prompt('קוד מאמן:'); if(p===null) return; if(p!==CLOUD.pin) return toast('קוד שגוי'); COACH=true; render(); }
+async function coachView(){
+  $('app').innerHTML='<div class="card muted">טוען…</div>';
+  let all; try{ all=await getAll(); }catch(e){ $('app').innerHTML='<div class="card">⚠️ אין חיבור</div>'; return; }
+  const us=Object.values(all).map(fix).sort((a,b)=>a.name.localeCompare(b.name,'he'));
+  $('app').innerHTML=`<div class="card"><h2>👀 כל המתאמנים (${us.length})</h2><div class="muted">מוצג רק מה שהמתאמנים הזינו בעצמם.</div></div>
+  <div class="ulist">${us.map(u=>{
+    const exs=Object.entries(u.ex).filter(([,h])=>h.length).map(([k,h])=>{const c=cmp(h);const n=(u.exNames||{})[k]||k;
+      const tag=c.k==='up'?'⬆️ +'+fmt(c.last-c.prev):c.k==='down'?'⬇️ '+fmt(c.last-c.prev):c.k==='new'?'🆕':'';
+      return `<div class="exr"><span>${esc(n)}</span><span>${c.last==null?'—':fmt(c.last)+' ק״ג'} <span class="${c.k}">${tag}</span></span></div>`;}).join('');
+    return `<div class="u"><b>${esc(u.name)}</b><div class="muted">${[u.h&&fmt(u.h)+' ס״מ',u.w&&fmt(u.w)+' ק״ג',u.age&&'גיל '+fmt(u.age)].filter(Boolean).join(' · ')||'בלי פרטים'}</div>${exs||'<div class="muted">עוד לא הזין תוצאות</div>'}</div>`;}).join('')}</div>`;
+}
+
+// ===== הפעלה =====
+(async()=>{
+  if(ME){ try{ USER=await getUser(ME); if(!USER) ME=null; }catch(e){ toast('⚠️ אין חיבור'); } }
+  render();
+  const f=document.createElement('div'); f.className='foot'; f.innerHTML='<button onclick="coachLogin()">🔒 כניסת מאמן</button>'; document.body.appendChild(f);
+})();
 </script>
 </body>
 </html>
