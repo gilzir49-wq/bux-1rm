@@ -135,7 +135,8 @@ const EXERCISES = [
   {n:"חתירה — מרחק בדקה",t:"dist",s:"row-1min"}
 ];
 const PCTS = [50,60,70,75,80,85,90,95];
-const PROGRAM_URL = "https://blocklab-tau.vercel.app/bux";   // ← אפליקציית תכנית האימונים של באקס   // מחשבון אחוזים מהשיא
+const PROGRAM_URL = "https://blocklab-tau.vercel.app/bux";   // ← אפליקציית תכנית האימונים של באקס
+const TODAY_URL   = "https://blocklab-tau.vercel.app/today"; // ← האימון של היום של המתאמן   // מחשבון אחוזים מהשיא
 </script>
 
 <header>
@@ -435,7 +436,7 @@ function exView(){
   const pcts = t==='kg' && b ? `<div class="card hd2"><h3>🧮 אחוזים מהשיא (${r1(b.v)} ק״ג)</h3><div class="pcts">${PCTS.map(p=>`<div class="pct"><small>${p}%</small><b>${Math.round(b.v*p/100*2)/2}</b></div>`).join('')}</div></div>` : '';
   const rows=h.map((r,i)=>({...r,i,c:cmpPair(h[i-1],r,t)})).reverse().map(r=>`<div class="r"><span><span class="dt">${showDate(r.iso)}</span>${r.note?`<span class="nt">„${esc(r.note)}“</span>`:''}</span><span class="vv">${show(r.v,t)} <span class="${r.c.k}">${r.c.k==='up'||r.c.k==='down'?tag(r.c,t):''}</span><br>${AS_COACH?`<button class="del" onclick="editRow(${r.i})">תיקון</button>`:''}<button class="del" onclick="delRow(${r.i})">מחיקה</button></span></div>`).join('');
   $('app').innerHTML=`${coachBar()}
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><button class="back" onclick="go('home')">→ ליומן</button><a class="lnk" href="${PROGRAM_URL}">📋 חזרה לאימון של היום</a></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><button class="back" onclick="go('home')">→ ליומן</button><a class="lnk" href="${TODAY_URL}">📋 חזרה לאימון של היום</a></div>
   <div class="card hd"><h2>${esc(EX)}</h2>
     ${c&&c.last!=null?`<div class="big"><b>${t==='time'?mmss(c.last):r1(c.last)}</b><span>${t==='time'?'אחרון':UNIT[t]+' · אחרון'}${t==='kg'&&USER.w?` · פי ${r1(c.last/USER.w)} ממשקל הגוף`:''}</span></div>`:''}
     ${b&&c&&b.v!==c.last?`<div class="muted">השיא שלך: ${show(b.v,t)} (${showDate(b.iso)})</div>`:''}
