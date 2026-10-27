@@ -134,9 +134,10 @@ const EXERCISES = [
   {n:"ריצת 400 מ׳",t:"time",s:"run-400m"},{n:"ריצת 5 ק״מ",t:"time",s:"run-5k"},{n:"חתירה 500 מ׳",t:"time",s:"row-500m"},{n:"חתירה 2 ק״מ",t:"time",s:"row-2k"},
   {n:"חתירה — מרחק בדקה",t:"dist",s:"row-1min"}
 ];
-const PCTS = [50,60,70,75,80,85,90,95];
+const PCTS = [50,60,70,75,80,85,90,95];   // מחשבון אחוזים מהשיא
 const PROGRAM_URL = "https://blocklab-tau.vercel.app/bux";   // ← אפליקציית תכנית האימונים של באקס
-const TODAY_URL   = "https://blocklab-tau.vercel.app/today"; // ← האימון של היום של המתאמן   // מחשבון אחוזים מהשיא
+const TODAY_URL   = "https://blocklab-tau.vercel.app/today"; // ← האימון של היום של המתאמן
+const BACK_ORIGIN = "https://blocklab-tau.vercel.app";       // ← "חזרה" מותרת רק לאתר הזה
 </script>
 
 <header>
@@ -160,7 +161,20 @@ let COACH=false, AS_COACH=false;     // AS_COACH = המאמן פתח יומן ש
 let EVENTS={}, BOARD_EX='דדליפט', BOARD_G='', EV=null;
 // קישור ישיר לתרגיל (?ex=deadlift) — נפתח מיד, או אחרי הכניסה
 let PENDING=null;
-try{ const q=new URLSearchParams(location.search).get('ex'); if(q){ const e=EXERCISES.find(x=>x.s===q.trim().toLowerCase()||x.n===q.trim()); if(e) PENDING=e.n; history.replaceState(null,'',location.pathname); } }catch(e){}
+// חזרה לנקודה המדויקת בתכנית (?back=...) — רק לאתר התכנית, אחרת מתעלמים (הגנה מהפניה לאתר זר)
+function safeBack(s){
+  try{ if(typeof s!=='string'||s.length>1500||!s.startsWith(BACK_ORIGIN+'/')) return null;
+       const u=new URL(s); return (u.protocol==='https:'&&u.origin===BACK_ORIGIN)?u.href:null; }catch(e){ return null; }
+}
+let BACK=null;
+try{ BACK=safeBack(sessionStorage.getItem('pr_back')); }catch(e){}
+try{
+  const sp=new URLSearchParams(location.search), q=sp.get('ex'), b=sp.get('back');
+  if(b!==null){ const ok=safeBack(b); if(ok){ BACK=ok; try{sessionStorage.setItem('pr_back',ok)}catch(e){} } }
+  if(q){ const e=EXERCISES.find(x=>x.s===q.trim().toLowerCase()||x.n===q.trim()); if(e) PENDING=e.n; }
+  if(q!==null||b!==null) history.replaceState(null,'',location.pathname);
+}catch(e){}
+const backOr = def => BACK || def;
 try{ ME=localStorage.getItem('pr_me'); COACH=sessionStorage.getItem('pr_coach')==='1'; }catch(e){}
 
 const $ = id => document.getElementById(id);
@@ -436,7 +450,7 @@ function exView(){
   const pcts = t==='kg' && b ? `<div class="card hd2"><h3>🧮 אחוזים מהשיא (${r1(b.v)} ק״ג)</h3><div class="pcts">${PCTS.map(p=>`<div class="pct"><small>${p}%</small><b>${Math.round(b.v*p/100*2)/2}</b></div>`).join('')}</div></div>` : '';
   const rows=h.map((r,i)=>({...r,i,c:cmpPair(h[i-1],r,t)})).reverse().map(r=>`<div class="r"><span><span class="dt">${showDate(r.iso)}</span>${r.note?`<span class="nt">„${esc(r.note)}“</span>`:''}</span><span class="vv">${show(r.v,t)} <span class="${r.c.k}">${r.c.k==='up'||r.c.k==='down'?tag(r.c,t):''}</span><br>${AS_COACH?`<button class="del" onclick="editRow(${r.i})">תיקון</button>`:''}<button class="del" onclick="delRow(${r.i})">מחיקה</button></span></div>`).join('');
   $('app').innerHTML=`${coachBar()}
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><button class="back" onclick="go('home')">→ ליומן</button><a class="lnk" href="${TODAY_URL}">📋 חזרה לאימון של היום</a></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><button class="back" onclick="go('home')">→ ליומן</button><a class="lnk" href="${esc(backOr(TODAY_URL))}">📋 חזרה לאימון של היום</a></div>
   <div class="card hd"><h2>${esc(EX)}</h2>
     ${c&&c.last!=null?`<div class="big"><b>${t==='time'?mmss(c.last):r1(c.last)}</b><span>${t==='time'?'אחרון':UNIT[t]+' · אחרון'}${t==='kg'&&USER.w?` · פי ${r1(c.last/USER.w)} ממשקל הגוף`:''}</span></div>`:''}
     ${b&&c&&b.v!==c.last?`<div class="muted">השיא שלך: ${show(b.v,t)} (${showDate(b.iso)})</div>`:''}
@@ -559,7 +573,7 @@ async function boot(){
   else if(ME){ try{ USER=await getUser(ME); if(!USER) ME=null; }catch(e){ toast('⚠️ אין חיבור'); } }
   render();
 }
-document.getElementById('progBtn').href=PROGRAM_URL;
+document.getElementById('progBtn').href=backOr(PROGRAM_URL);
 boot();
 const f=document.createElement('div'); f.className='foot'; f.innerHTML='<button onclick="coachLogin()">🔒 כניסת מאמן</button>'; document.body.appendChild(f);
 </script>
